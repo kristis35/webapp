@@ -2,19 +2,28 @@ Welcome to the ACT Webapp!
 
 To start developing run 'yarn start' in the terminal. Happy development!
 
-Sample of test restJs api helper class usage:
+Sample of restJs api helper usage:
 
-    import { useState, useEffect } from 'react';
-    import { RestJs } from './utils';
+    import { find } from './utils';
 
     const Component = () => {
-        const [testData, setTestData] = useState(null);
+        const { data, loading, error } = find(URL);
 
-        useEffect(() => {
-            RestJs.find('url', (response) => {
-            setTestData(response);
-            });
-        }, []);
+        if (loading) {
+            // Handle loading state here
+        }
 
-        return <div>Test RestJs</div>;
+        if (error) {
+            // Handle error state here
+        }
+
+        return (
+            <h1
+            style={{
+                textAlign: 'center'
+            }}
+            >
+                RestJs
+            </h1>
+        );
     };

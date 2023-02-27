@@ -1,1 +1,1 @@
-export { find, save, update, remove } from './restJs';
+export * from './restJs';

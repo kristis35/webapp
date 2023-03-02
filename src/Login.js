@@ -17,6 +17,13 @@ function Login() {
     event.preventDefault();
     console.log('Username: ', username);
     console.log('Password: ', password);
+
+    fetch('http://localhost:8080/login', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + btoa(username + ':' + password)
+      }
+    });
   }
 
   return (

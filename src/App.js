@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from './Login.js';
+import Register from './Register.js';
 const NavigationBar = styled.div`
   height: 30px;
   color: black;
@@ -25,7 +26,7 @@ const App = () => {
             />
             <Route
               path='register'
-              element={<div>Register</div>}
+              element={<Register  />}
             />
           </Route>
         </Routes>

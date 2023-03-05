@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import './Register.css';
 
-const Register = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+
+
+
+function Register()  {
+    const [name, setFirstName] = useState('');
+    const [surname, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -11,30 +14,18 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState([]);
   
+    
     const handleSubmit = (event) => {
       event.preventDefault();
       const validationErrors = [];
-      // Check first name
-      if (!firstName) {
-        validationErrors.push('First name is required');
-      }
-      // Check last name
-      if (!lastName) {
-        validationErrors.push('Last name is required');
-      }
-      // Check username
-      if (!username) {
-        validationErrors.push('Username is required');
+      // Check name
+      if (!name) {
+        validationErrors.push('Name is required');
       }
       // Check email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         validationErrors.push('Please enter a valid email address');
-      }
-      // Check phone number
-      const phoneRegex = /^\d{10}$/;
-      if (!phoneRegex.test(phoneNumber)) {
-        validationErrors.push('Please enter a valid 10-digit phone number');
       }
       // Check password
       if (password.length < 6) {
@@ -43,14 +34,34 @@ const Register = () => {
       if (password !== confirmPassword) {
         validationErrors.push('Passwords do not match');
       }
+      setErrors(validationErrors);
       if (validationErrors.length === 0) {
-        // Submit form data
-        console.log('Form submitted successfully');
-      } else {
-        setErrors(validationErrors);
+        // Call the saveData function
+        fetch('http://localhost:8080/user/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: name,
+              surname: surname,
+              username: username,
+              email: email,
+              phoneNumber: phoneNumber,
+              password: password
+            })
+          })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
       }
     };
   
+    
+  
+     
+
+    
     return (
       <div className="registration-container">
         <form onSubmit={handleSubmit}>
@@ -60,7 +71,7 @@ const Register = () => {
             <input
               type="text"
               id="firstName"
-              value={firstName}
+              value={name}
               onChange={(event) => setFirstName(event.target.value)}
             />
           </div>
@@ -69,7 +80,7 @@ const Register = () => {
             <input
               type="text"
               id="lastName"
-              value={lastName}
+              value={surname}
               onChange={(event) => setLastName(event.target.value)}
             />
           </div>
@@ -118,17 +129,18 @@ const Register = () => {
                     onChange={(event) => setConfirmPassword(event.target.value)}
                 />
             </div>
+            
             {errors.length > 0 && (
-            <ul className="error-list">
-                {errors.map((error, index) => (
-                <li key={index}>{error}</li>
+            <ul>
+              {errors.map((error) => (
+                <li key={error}>{error}</li>
             ))}
             </ul>
             )}
             <button type="submit">Submit</button>
             </form>
-    </div>
-  );
-  };
+      </div>
+    );
+  }
   
   export default Register;

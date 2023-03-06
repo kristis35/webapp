@@ -36,7 +36,7 @@ function Register()  {
       }
       setErrors(validationErrors);
       if (validationErrors.length === 0) {
-        // Call the saveData function
+
         fetch('http://localhost:8080/user/register', {
             method: 'POST',
             headers: {
@@ -51,9 +51,37 @@ function Register()  {
               password: password
             })
           })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
+          .then(response => {
+            if (response.status === 409 && response.data && response.data.message === 'Username and Email is taken') {
+                throw new Error('Username and Email is taken');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.message) {
+                console.log(`Success: ${data.message}`);
+                window.alert(data.message); // display the success message in a message box
+                // handle the success message here
+            } else {
+                console.log('Registration successful!');
+                // handle success without a message
+            }
+        })
+        .catch(error => {
+            if (error.message === 'Username and Email is taken') {
+                window.alert('Username and Email is taken');
+                // handle the error message here
+            } else if (error.response && error.response.data && error.response.data.message) {
+                console.error(`Error: ${error.response.data.message}`);
+                // handle other error messages here
+            } else {
+                console.error(error);
+            }
+        });
+          
+          
+          
+          
       }
     };
   
@@ -134,9 +162,11 @@ function Register()  {
             <ul>
               {errors.map((error) => (
                 <li key={error}>{error}</li>
+                
             ))}
             </ul>
             )}
+            
             <button type="submit">Submit</button>
             </form>
       </div>

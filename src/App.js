@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
+import { Theme } from './components';
+import { UserInteface } from './pages';
 
 const NavigationBar = styled.div`
   height: 30px;
@@ -10,7 +12,7 @@ const NavigationBar = styled.div`
 
 const App = () => {
   return (
-    <>
+    <Theme>
       <NavigationBar>Navigation Bar</NavigationBar>
       <Router>
         <Routes>
@@ -27,10 +29,14 @@ const App = () => {
               path='register'
               element={<div>Register</div>}
             />
+            <Route
+              path='ui'
+              element={<UserInteface />}
+            />
           </Route>
         </Routes>
       </Router>
-    </>
+    </Theme>
   );
 };
 

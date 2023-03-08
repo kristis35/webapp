@@ -4,7 +4,8 @@ import { ThemeProvider } from 'styled-components';
 const theme = {
   colors: {
     Default: '#6A7FC7',
-    BlazeBlue: '#23ABE5',
+    Black: '#000000',
+    BlazeBlue: '#275BE1',
     PurpleBlue: '#6A7FC7',
     SkyBlue: '#23ABE5',
     DarkGray: '#636060',

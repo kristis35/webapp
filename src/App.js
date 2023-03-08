@@ -1,20 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components';
-import { Theme } from './components';
+import { NavigationBar, Theme } from './components';
 import { UserInteface } from './pages';
-
-const NavigationBar = styled.div`
-  height: 30px;
-  color: black;
-  font-weight: bold;
-  background-color: purple;
-`;
 
 const App = () => {
   return (
     <Theme>
-      <NavigationBar>Navigation Bar</NavigationBar>
       <Router>
+        <NavigationBar />
         <Routes>
           <Route path='/'>
             <Route

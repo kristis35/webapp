@@ -23,10 +23,7 @@ const Button = styled.button`
 `;
 
 const Text = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: auto;
   text-align: center;
   font-size: 16px;
   font-weight: bold;

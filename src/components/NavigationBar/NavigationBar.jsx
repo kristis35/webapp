@@ -5,8 +5,7 @@ import { useTheme } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const TopBar = styled.div`
-  position: fixed;
-  top: 0;
+  position: relative;
   display: flex;
   justify-content: space-between;
   height: 52px;

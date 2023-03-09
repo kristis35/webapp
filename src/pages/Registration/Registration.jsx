@@ -88,7 +88,7 @@ const Registration = () => {
     ) {
       console.error(`Error: ${error.response.data.message}`);
       // handle the error message here
-    } else {
+    } else if (error) {
       console.error(error);
     }
   }, [error]);
@@ -116,8 +116,10 @@ const Registration = () => {
     }
     setErrors(validationErrors);
     if (validationErrors?.length === 0) {
-      const { confirmPassword, ...request } = registrationDetails;
-      console.log(confirmPassword);
+      const request = {
+        ...registrationDetails
+      };
+      delete request.confirmPassword;
       save(request);
     }
   };

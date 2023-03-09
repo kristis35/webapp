@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NavigationBar, Theme } from './components';
 import { Registration, UserInteface } from './pages';
+import { Login } from './pages/Login';
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
             />
             <Route
               path='login'
-              element={<div>Login</div>}
+              element={<Login />}
             />
             <Route
               path='register'

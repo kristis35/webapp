@@ -4,10 +4,12 @@ To start developing run 'yarn install' anf then 'yarn start' in the terminal. Ha
 
 Sample of restJs api helper usage:
 
-    import { find } from './utils';
+    import { useFind } from './utils';
 
     const Component = () => {
-        const { data, loading, error } = find(URL);
+        const { data, loading, error, find } = useFind(URL);
+
+        find();
 
         if (loading) {
             // Handle loading state here

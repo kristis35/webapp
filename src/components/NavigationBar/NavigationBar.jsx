@@ -75,6 +75,11 @@ const NavigationBar = () => {
     setSideBarIsOpen(!sideBarIsOpen);
   };
 
+  const logOut = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
     <>
       <TopBar>
@@ -104,6 +109,15 @@ const NavigationBar = () => {
                 value='Home'
                 color={theme.colors.PurpleBlue}
                 onClick={() => navigate('/')}
+              />
+            </>
+          )}
+          {token && (
+            <>
+              <OutlinedButton
+                value='Log Out'
+                color={theme.colors.PurpleBlue}
+                onClick={() => logOut}
               />
             </>
           )}

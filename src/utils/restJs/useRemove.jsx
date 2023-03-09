@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
-const find = (url) => {
+const useRemove = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = () => {
+  const deleteData = () => {
     setLoading(true);
     axios
-      .get(url)
+      .delete(url)
       .then((response) => {
         setData(response.data);
       })
@@ -21,15 +21,11 @@ const find = (url) => {
       });
   };
 
-  const retryCall = () => {
-    fetchData();
+  const remove = () => {
+    deleteData();
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [url]);
-
-  return { data, loading, error, retryCall };
+  return { data, loading, error, remove };
 };
 
-export default find;
+export default useRemove;

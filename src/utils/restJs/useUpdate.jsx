@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
-const remove = (url) => {
+const useUpdate = (url, request) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const deleteData = () => {
+  const updateData = () => {
     setLoading(true);
     axios
-      .delete(url)
+      .put(url, request)
       .then((response) => {
         setData(response.data);
       })
@@ -21,15 +21,11 @@ const remove = (url) => {
       });
   };
 
-  const retryCall = () => {
-    deleteData();
+  const update = () => {
+    updateData();
   };
 
-  useEffect(() => {
-    deleteData();
-  }, [url]);
-
-  return { data, loading, error, retryCall };
+  return { data, loading, error, update };
 };
 
-export default remove;
+export default useUpdate;

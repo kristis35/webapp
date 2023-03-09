@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
-const save = (url, request) => {
+const useFind = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const saveData = () => {
+  const fetchData = () => {
     setLoading(true);
     axios
-      .post(url, request)
+      .get(url)
       .then((response) => {
         setData(response.data);
       })
@@ -21,15 +21,11 @@ const save = (url, request) => {
       });
   };
 
-  const retryCall = () => {
-    saveData();
+  const find = () => {
+    fetchData();
   };
 
-  useEffect(() => {
-    saveData();
-  }, [url]);
-
-  return { data, loading, error, retryCall };
+  return { data, loading, error, find };
 };
 
-export default save;
+export default useFind;

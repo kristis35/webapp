@@ -1,4 +1,4 @@
-export { default as find } from './find';
-export { default as save } from './save';
-export { default as update } from './update';
-export { default as remove } from './remove';
+export { default as useFind } from './useFind';
+export { default as useSave } from './useSave';
+export { default as useUpdate } from './useUpdate';
+export { default as useRemove } from './useRemove';

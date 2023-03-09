@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
-const update = (url, request) => {
+const useSave = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateData = () => {
+  const saveData = (request) => {
     setLoading(true);
     axios
-      .put(url, request)
+      .post(url, request)
       .then((response) => {
         setData(response.data);
       })
@@ -21,15 +21,11 @@ const update = (url, request) => {
       });
   };
 
-  const retryCall = () => {
-    updateData();
+  const save = (request) => {
+    saveData(request);
   };
 
-  useEffect(() => {
-    updateData();
-  }, [url]);
-
-  return { data, loading, error, retryCall };
+  return { data, loading, error, save };
 };
 
-export default update;
+export default useSave;

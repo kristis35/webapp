@@ -104,8 +104,10 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     save(null, {
-      Authorization:
-        'Basic ' + btoa(credentials.username + ':' + credentials.password)
+      headers: {
+        Authorization:
+          'Basic ' + btoa(credentials.username + ':' + credentials.password)
+      }
     });
   };
 

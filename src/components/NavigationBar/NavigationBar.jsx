@@ -98,7 +98,7 @@ const NavigationBar = () => {
               />
             </>
           )}
-          {token && location.pathname !== '/' && (
+          {location.pathname !== '/' && (
             <>
               <OutlinedButton
                 value='Home'

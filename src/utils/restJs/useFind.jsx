@@ -4,19 +4,21 @@ import axios from 'axios';
 const useFind = (url) => {
   const [data, setData] = useState(null);
   const [status, setStatus] = useState(null);
+  const [headers, setHeaders] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = () => {
+  const fetchData = (headers) => {
     setLoading(true);
     axios
-      .get(url)
+      .get(url, headers)
       .then((response) => {
         setData(response.data);
         setStatus({
           code: response.status,
           text: response.statusText
         });
+        setHeaders(response.headers);
       })
       .catch((err) => {
         setError(err);
@@ -26,11 +28,11 @@ const useFind = (url) => {
       });
   };
 
-  const find = () => {
-    fetchData();
+  const find = (headers = null) => {
+    fetchData(headers);
   };
 
-  return { data, status, loading, error, find };
+  return { data, status, headers, loading, error, find };
 };
 
 export default useFind;

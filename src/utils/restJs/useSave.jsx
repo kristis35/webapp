@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const useSave = (url) => {
   const [data, setData] = useState(null);
+  const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -12,6 +13,10 @@ const useSave = (url) => {
       .post(url, request)
       .then((response) => {
         setData(response.data);
+        setStatus({
+          code: response.status,
+          text: response.statusText
+        });
       })
       .catch((err) => {
         setError(err);
@@ -25,7 +30,7 @@ const useSave = (url) => {
     saveData(request);
   };
 
-  return { data, loading, error, save };
+  return { data, status, loading, error, save };
 };
 
 export default useSave;

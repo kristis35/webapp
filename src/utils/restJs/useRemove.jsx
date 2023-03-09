@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const useRemove = (url) => {
   const [data, setData] = useState(null);
+  const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -12,6 +13,10 @@ const useRemove = (url) => {
       .delete(url)
       .then((response) => {
         setData(response.data);
+        setStatus({
+          code: response.status,
+          text: response.statusText
+        });
       })
       .catch((err) => {
         setError(err);
@@ -25,7 +30,7 @@ const useRemove = (url) => {
     deleteData();
   };
 
-  return { data, loading, error, remove };
+  return { data, status, loading, error, remove };
 };
 
 export default useRemove;

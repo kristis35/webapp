@@ -10,9 +10,10 @@ const Button = styled(ButtonBase)`
 `;
 
 const OutlinedButton = (props) => {
-  const { value, font, color, onClick, loading } = props;
+  const { value, font, color, onClick, loading, ...rest } = props;
   return (
     <Button
+      {...rest}
       value={value}
       font={font}
       color={color}

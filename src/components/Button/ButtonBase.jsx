@@ -57,11 +57,12 @@ const Loader = styled.span`
 `;
 
 const ButtonBase = (props) => {
-  const { className, value, onClick, loading } = props;
+  const { className, value, onClick, loading, ...rest } = props;
   return (
     <Button
+      {...rest}
       className={className}
-      onClick={!loading && onClick}
+      onClick={!loading ? onClick : () => {}}
     >
       {loading ? <Loader /> : <Text>{value}</Text>}
     </Button>

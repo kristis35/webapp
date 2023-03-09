@@ -36,7 +36,7 @@ const SideBar = styled.div`
 
   background-color: ${(props) => props.theme.colors.Black};
   background: linear-gradient(
-    to top,
+    to bottom,
     ${(props) => props.theme.colors.Black} 24%,
     ${(props) => `${props.theme.colors.Black}E5`} 64%,
     ${(props) => `${props.theme.colors.Black}CC`} 100%,

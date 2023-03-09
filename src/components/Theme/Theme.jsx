@@ -5,6 +5,7 @@ const theme = {
   colors: {
     Default: '#6A7FC7',
     Black: '#000000',
+    White: '#ffffff',
     BlazeBlue: '#275BE1',
     PurpleBlue: '#6A7FC7',
     SkyBlue: '#23ABE5',
@@ -20,7 +21,8 @@ const theme = {
     LigthRed: '#D36666'
   },
   fonts: {
-    Default: 'Allerta Stencil'
+    Default: 'Allerta Stencil',
+    InriaSerif: 'Inria Serif'
   }
 };
 

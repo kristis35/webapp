@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NavigationBar, Theme } from './components';
-import { UserInteface } from './pages';
+import { Registration, UserInteface } from './pages';
 
 const App = () => {
   return (
@@ -19,7 +19,7 @@ const App = () => {
             />
             <Route
               path='register'
-              element={<div>Register</div>}
+              element={<Registration />}
             />
             <Route
               path='ui'

@@ -117,7 +117,7 @@ const NavigationBar = () => {
               <OutlinedButton
                 value='Log Out'
                 color={theme.colors.PurpleBlue}
-                onClick={() => logOut}
+                onClick={logOut}
               />
             </>
           )}

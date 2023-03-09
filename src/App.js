@@ -24,10 +24,6 @@ const App = () => {
               element={<Registration />}
             />
             <Route
-              path='home'
-              element={<Home />}
-            />
-            <Route
               path='ui'
               element={<UserInteface />}
             />

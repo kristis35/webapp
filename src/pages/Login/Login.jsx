@@ -70,7 +70,7 @@ const Login = () => {
   useEffect(() => {
     if (status?.code === 200 && headers?.authorization) {
       localStorage.setItem('token', headers.authorization);
-      navigate('/home');
+      navigate('/');
     }
   }, [status, headers]);
 

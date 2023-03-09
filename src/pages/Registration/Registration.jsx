@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import { ContainedButton } from '../../components';
@@ -77,25 +77,31 @@ const Registration = () => {
   });
 
   const [errors, setErrors] = useState([]);
-  const [data, setData] = useState(null);
+  const [response, setResponse] = useState(null);
   //   const [loading, setLoading] = useState(false);
 
-  const { response, loading, error, save } = useSave(
+  const { data, loading, error, save } = useSave(
     'http://localhost:8080/user/register'
   );
 
-  if (response) {
-    console.log(response);
-    setData(response);
+  if (data) {
+    console.log(data);
+    setResponse(data);
   }
 
   if (error) {
-    if (error.response && error.response.data && error.response.data.message) {
-      console.error(`Error: ${error.response.data.message}`);
-      // handle the error message here
-    } else {
-      console.error(error);
-    }
+    useEffect(() => {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        console.error(`Error: ${error.response.data.message}`);
+        // handle the error message here
+      } else {
+        console.error(error);
+      }
+    }, [error]);
   }
 
   const theme = useTheme();
@@ -232,9 +238,9 @@ const Registration = () => {
             }
           />
         </InputContainer>
-        {data && (
+        {response && (
           <DangerMessageContainer className='form-control danger-message'>
-            <p>{data.message}</p>
+            <p>{response.message}</p>
           </DangerMessageContainer>
         )}
 

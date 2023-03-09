@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import { ContainedButton } from '../../components';
 import { useSave } from '../../utils';
@@ -56,7 +56,7 @@ const Input = styled.input`
 
 const Login = () => {
   const theme = useTheme();
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
     username: '',
@@ -68,12 +68,11 @@ const Login = () => {
   );
 
   useEffect(() => {
-    // if (status?.code === 200) {
-    //   localStorage.setItem('token', token);
-    //   navigate('/home');
-    //   }
-    console.log(headers);
-  }, [status]);
+    if (status?.code === 200 && headers?.authorization) {
+      localStorage.setItem('token', headers.authorization);
+      navigate('/home');
+    }
+  }, [status, headers]);
 
   useEffect(() => {
     if (

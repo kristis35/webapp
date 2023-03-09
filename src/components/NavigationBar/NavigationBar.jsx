@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ContainedButton, IconButton, MenuIcon } from '..';
+import { ContainedButton, IconButton, MenuIcon, OutlinedButton } from '..';
 import { useTheme } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -64,6 +64,8 @@ const NavigationButtonsContainer = styled.div`
 `;
 
 const NavigationBar = () => {
+  const token = localStorage.getItem('token');
+
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -72,6 +74,7 @@ const NavigationBar = () => {
   const toggleSideBar = () => {
     setSideBarIsOpen(!sideBarIsOpen);
   };
+
   return (
     <>
       <TopBar>
@@ -81,7 +84,7 @@ const NavigationBar = () => {
           </IconButton>
         </MenuButtonContainer>
         <NavigationButtonsContainer>
-          {location.pathname === '/' && (
+          {!token && location.pathname === '/' && (
             <>
               <ContainedButton
                 value='Sign Up'
@@ -92,6 +95,15 @@ const NavigationBar = () => {
                 value='Sign In'
                 color={theme.colors.SkyBlue}
                 onClick={() => navigate('/login')}
+              />
+            </>
+          )}
+          {token && location.pathname !== '/' && (
+            <>
+              <OutlinedButton
+                value='Home'
+                color={theme.colors.PurpleBlue}
+                onClick={() => navigate('/')}
               />
             </>
           )}

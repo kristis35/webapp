@@ -8,10 +8,10 @@ const useSave = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const saveData = (request, headers) => {
+  const saveData = (request, config) => {
     setLoading(true);
     axios
-      .post(url, request, headers)
+      .post(url, request, config)
       .then((response) => {
         setData(response.data);
         setStatus({
@@ -28,8 +28,8 @@ const useSave = (url) => {
       });
   };
 
-  const save = (request, headers = null) => {
-    saveData(request, headers);
+  const save = (request, config = null) => {
+    saveData(request, config);
   };
 
   return { data, status, headers, loading, error, save };

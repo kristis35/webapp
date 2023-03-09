@@ -8,10 +8,10 @@ const useFind = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = (headers) => {
+  const fetchData = (config) => {
     setLoading(true);
     axios
-      .get(url, headers)
+      .get(url, config)
       .then((response) => {
         setData(response.data);
         setStatus({
@@ -28,8 +28,8 @@ const useFind = (url) => {
       });
   };
 
-  const find = (headers = null) => {
-    fetchData(headers);
+  const find = (config = null) => {
+    fetchData(config);
   };
 
   return { data, status, headers, loading, error, find };

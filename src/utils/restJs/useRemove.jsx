@@ -8,10 +8,10 @@ const useRemove = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const deleteData = (headers) => {
+  const deleteData = (config) => {
     setLoading(true);
     axios
-      .delete(url, headers)
+      .delete(url, config)
       .then((response) => {
         setData(response.data);
         setStatus({
@@ -28,8 +28,8 @@ const useRemove = (url) => {
       });
   };
 
-  const remove = (headers = null) => {
-    deleteData(headers);
+  const remove = (config = null) => {
+    deleteData(config);
   };
 
   return { data, status, headers, loading, error, remove };

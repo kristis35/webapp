@@ -8,10 +8,10 @@ const useUpdate = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateData = (request, headers) => {
+  const updateData = (request, config) => {
     setLoading(true);
     axios
-      .put(url, request, headers)
+      .put(url, request, config)
       .then((response) => {
         setData(response.data);
         setStatus({
@@ -28,8 +28,8 @@ const useUpdate = (url) => {
       });
   };
 
-  const update = (request, headers = null) => {
-    updateData(request, headers);
+  const update = (request, config = null) => {
+    updateData(request, config);
   };
 
   return { data, status, headers, loading, error, update };

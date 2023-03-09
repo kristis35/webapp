@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import { ContainedButton } from '../../components';
 import { useSave } from '../../utils';
@@ -54,18 +54,10 @@ const Input = styled.input`
   }
 `;
 
-const DangerMessageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #f44336; /* Red */
-  color: white;
-  margin-bottom: 15px;
-`;
-
 const Registration = () => {
+  const theme = useTheme();
+  const navigate = useNavigate();
+
   const [registrationDetails, setRegistrationDetails] = useState({
     name: '',
     surname: '',
@@ -77,35 +69,29 @@ const Registration = () => {
   });
 
   const [errors, setErrors] = useState([]);
-  const [response, setResponse] = useState(null);
-  //   const [loading, setLoading] = useState(false);
 
-  const { data, loading, error, save } = useSave(
+  const { status, loading, error, save } = useSave(
     'http://localhost:8080/user/register'
   );
 
-  if (data) {
-    console.log(data);
-    setResponse(data);
-  }
+  useEffect(() => {
+    if (status?.code === 201) {
+      navigate('/login');
+    }
+  }, [status]);
 
-  if (error) {
-    useEffect(() => {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        console.error(`Error: ${error.response.data.message}`);
-        // handle the error message here
-      } else {
-        console.error(error);
-      }
-    }, [error]);
-  }
-
-  const theme = useTheme();
-  //   const navigate = useNavigate();
+  useEffect(() => {
+    if (
+      error?.response &&
+      error?.response.data &&
+      error?.response.data.message
+    ) {
+      console.error(`Error: ${error.response.data.message}`);
+      // handle the error message here
+    } else {
+      console.error(error);
+    }
+  }, [error]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -238,11 +224,6 @@ const Registration = () => {
             }
           />
         </InputContainer>
-        {response && (
-          <DangerMessageContainer className='form-control danger-message'>
-            <p>{response.message}</p>
-          </DangerMessageContainer>
-        )}
 
         {errors?.length > 0 && (
           <ul>

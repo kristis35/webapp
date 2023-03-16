@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import { ContainedButton } from '../../components';
 import { useSave } from '../../utils';
+import { DataContext } from '../../utils';
 
 const FormContainer = styled.div`
   display: flex;
@@ -55,6 +56,7 @@ const Input = styled.input`
 `;
 
 const Registration = () => {
+  const dataContext = useContext(DataContext);
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -70,15 +72,15 @@ const Registration = () => {
 
   const [errors, setErrors] = useState([]);
 
-  const { status, loading, error, save } = useSave(
-    'http://localhost:8080/user/register'
+  const { response, loading, error, save } = useSave(
+    `${dataContext.API}/user/register`
   );
 
   useEffect(() => {
-    if (status?.code === 201) {
+    if (response?.status === 201) {
       navigate('/login');
     }
-  }, [status]);
+  }, [response]);
 
   useEffect(() => {
     if (

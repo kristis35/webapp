@@ -1,1 +1,1 @@
-export { default as UserInteface } from './UserInterface';
+export { default as UserInteface } from './user-interface';

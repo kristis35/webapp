@@ -1,146 +1,125 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
-import { ContainedButton } from '../../components';
+import { Form, Input } from '../../components';
 import { useSave } from '../../utils';
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  // font-family: Arial, sans-serif;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  background-color: ${(props) => `${props.theme.colors.White}7F`};
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-`;
-
-const Title = styled.h2`
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 24px;
-  text-align: center;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-`;
-
-const Label = styled.label`
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  transition: border-color 0.2s ease-in-out;
-
-  &:focus {
-    border-color: #0077cc;
-  }
-`;
+import { DataContext } from '../../utils';
 
 const Login = () => {
-  const theme = useTheme();
+  const dataContext = useContext(DataContext);
   const navigate = useNavigate();
-
+  const [hasErrors, setHasErrors] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState('');
   const [credentials, setCredentials] = useState({
-    username: '',
-    password: ''
+    username: {
+      value: '',
+      errorMessage: ''
+    },
+    password: {
+      value: '',
+      errorMessage: ''
+    }
   });
 
-  const { status, headers, loading, error, save } = useSave(
-    'http://localhost:8080/login'
+  const { response, loading, error, save } = useSave(
+    `${dataContext.API}/login`
   );
 
   useEffect(() => {
-    if (status?.code === 200 && headers?.authorization) {
-      localStorage.setItem('token', headers.authorization);
+    if (response?.status === 200 && response?.headers?.authorization) {
+      localStorage.setItem('token', response.headers.authorization);
       navigate('/');
     }
-  }, [status, headers]);
+  }, [response]);
 
   useEffect(() => {
-    if (
-      error?.response &&
-      error?.response.data &&
-      error?.response.data.message
-    ) {
-      console.error(`Error: ${error.response.data.message}`);
-      // handle the error message here
-    } else if (error) {
-      console.error(error);
+    if (error) {
+      setFormErrorMessage('Username or password is incorrect');
     }
   }, [error]);
 
-  const handleUsernameChange = (e) => {
+  const handleChange = (e) => {
+    setFormErrorMessage('');
     setCredentials({
       ...credentials,
-      username: e.target.value
-    });
-  };
-
-  const handlePasswordChange = (e) => {
-    setCredentials({
-      ...credentials,
-      password: e.target.value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    save(null, {
-      headers: {
-        Authorization:
-          'Basic ' + btoa(credentials.username + ':' + credentials.password)
+      [e.target.name]: {
+        value: e.target.value,
+        errorMessage: ''
       }
     });
   };
 
+  const checkForErrors = () => {
+    setHasErrors(false);
+
+    if (credentials.username?.value === '') {
+      setHasErrors(true);
+      setCredentials({
+        ...credentials,
+        username: {
+          ...credentials.username,
+          errorMessage: 'Required'
+        }
+      });
+    }
+
+    if (credentials.password?.value === '') {
+      setHasErrors(true);
+      setCredentials({
+        ...credentials,
+        password: {
+          ...credentials.password,
+          errorMessage: 'Required'
+        }
+      });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    checkForErrors();
+
+    if (!hasErrors) {
+      save(null, {
+        headers: {
+          Authorization:
+            'Basic ' +
+            btoa(
+              credentials.username?.value + ':' + credentials.password?.value
+            )
+        }
+      });
+    }
+  };
+
   return (
-    <FormContainer>
-      <Form onSubmit={handleSubmit}>
-        <Title>Login</Title>
-        <InputContainer>
-          <Label htmlFor='username'>Username</Label>
-          <Input
-            type='text'
-            id='username'
-            value={credentials.username}
-            onChange={handleUsernameChange}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label htmlFor='password'>Password</Label>
-          <Input
-            type='password'
-            id='password'
-            value={credentials.password}
-            onChange={handlePasswordChange}
-          />
-        </InputContainer>
-        <ContainedButton
-          value='Submit'
-          color={theme.colors.PurpleBlue}
-          loading={loading}
-          type='submit'
-        />
-      </Form>
-    </FormContainer>
+    <Form
+      title='Login'
+      onSubmit={handleSubmit}
+      loading={loading}
+      errorMessage={formErrorMessage}
+    >
+      <Input
+        type='text'
+        label='Username'
+        name='username'
+        value={credentials.username?.value}
+        onChange={handleChange}
+        placeholder='Username'
+        required
+        errorMessage={credentials.username?.errorMessage}
+      />
+      <Input
+        type='password'
+        label='Password'
+        name='password'
+        value={credentials.password?.value}
+        onChange={handleChange}
+        placeholder='Password'
+        required
+        errorMessage={credentials.password?.errorMessage}
+      />
+    </Form>
   );
 };
 

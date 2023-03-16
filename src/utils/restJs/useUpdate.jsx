@@ -2,9 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const useUpdate = (url) => {
-  const [data, setData] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [headers, setHeaders] = useState(null);
+  const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -13,12 +11,7 @@ const useUpdate = (url) => {
     axios
       .put(url, request, config)
       .then((response) => {
-        setData(response.data);
-        setStatus({
-          code: response.status,
-          text: response.statusText
-        });
-        setHeaders(response.headers);
+        setResponse(response);
       })
       .catch((err) => {
         setError(err);
@@ -32,7 +25,7 @@ const useUpdate = (url) => {
     updateData(request, config);
   };
 
-  return { data, status, headers, loading, error, update };
+  return { response, loading, error, update };
 };
 
 export default useUpdate;

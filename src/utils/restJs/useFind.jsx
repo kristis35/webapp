@@ -2,9 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const useFind = (url) => {
-  const [data, setData] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [headers, setHeaders] = useState(null);
+  const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -13,12 +11,7 @@ const useFind = (url) => {
     axios
       .get(url, config)
       .then((response) => {
-        setData(response.data);
-        setStatus({
-          code: response.status,
-          text: response.statusText
-        });
-        setHeaders(response.headers);
+        setResponse(response);
       })
       .catch((err) => {
         setError(err);
@@ -32,7 +25,7 @@ const useFind = (url) => {
     fetchData(config);
   };
 
-  return { data, status, headers, loading, error, find };
+  return { response, loading, error, find };
 };
 
 export default useFind;

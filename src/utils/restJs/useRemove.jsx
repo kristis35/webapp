@@ -2,9 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const useRemove = (url) => {
-  const [data, setData] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [headers, setHeaders] = useState(null);
+  const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -13,12 +11,7 @@ const useRemove = (url) => {
     axios
       .delete(url, config)
       .then((response) => {
-        setData(response.data);
-        setStatus({
-          code: response.status,
-          text: response.statusText
-        });
-        setHeaders(response.headers);
+        setResponse(response);
       })
       .catch((err) => {
         setError(err);
@@ -32,7 +25,7 @@ const useRemove = (url) => {
     deleteData(config);
   };
 
-  return { data, status, headers, loading, error, remove };
+  return { response, loading, error, remove };
 };
 
 export default useRemove;

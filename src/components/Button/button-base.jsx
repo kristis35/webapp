@@ -6,6 +6,18 @@ const Button = styled.button`
   padding: 4px 8px 4px 8px;
   cursor: pointer;
   min-width: 84px;
+  width: ${(props) => {
+    switch (props.size) {
+      case 'xs':
+        return '84px';
+      case 'sm':
+        return '126px';
+      case 'md':
+        return '168px';
+      case 'lg':
+        return '336px';
+    }
+  }};
   height: 32px;
   margin: 4px;
   border-radius: 36px;
@@ -22,8 +34,16 @@ const Button = styled.button`
   }
 `;
 
+const ValueContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 24px;
+`;
+
 const Text = styled.span`
-  margin: auto;
+  margin-top: auto;
+  margin-bottom: auto;
   text-align: center;
   font-size: 16px;
   font-weight: bold;
@@ -57,14 +77,38 @@ const Loader = styled.span`
 `;
 
 const ButtonBase = (props) => {
-  const { className, value, onClick, loading, ...rest } = props;
+  const {
+    className,
+    value,
+    icon,
+    iconPossition = 'left',
+    onClick,
+    loading,
+    disabled,
+    ...buttonProps
+  } = props;
   return (
     <Button
-      {...rest}
+      {...buttonProps}
       className={className}
       onClick={!loading ? onClick : () => {}}
+      disabled={disabled}
     >
-      {loading ? <Loader /> : <Text>{value}</Text>}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {icon ? (
+            <ValueContainer>
+              {iconPossition === 'left' && icon}
+              <Text>{value}</Text>
+              {iconPossition === 'right' && icon}
+            </ValueContainer>
+          ) : (
+            <Text>{value}</Text>
+          )}
+        </>
+      )}
     </Button>
   );
 };

@@ -1,2 +1,2 @@
-export { default as ContainedButton } from './ContainedButton';
-export { default as OutlinedButton } from './OutlinedButton';
+export { default as ContainedButton } from './contained-button';
+export { default as OutlinedButton } from './outlined-button';

@@ -1,13 +1,13 @@
 Welcome to the ACT Webapp!
 
-To start developing run 'yarn install' anf then 'yarn start' in the terminal. Happy development!
+To start developing run 'yarn install' and then 'yarn start' in the terminal. Happy development!
 
 Sample of restJs api helper usage:
 
     import { useFind } from './utils';
 
     const Component = () => {
-        const { data, loading, error, find } = useFind(URL);
+        const { response, loading, error, find } = useFind(URL);
 
         find();
 

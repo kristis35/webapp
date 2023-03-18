@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NavigationBar, Theme } from './components';
-import { Registration, UserInteface } from './pages';
-import { Login } from './pages';
+import { Login, Registration, UserInteface } from './pages';
 import { DataContext } from './utils';
 
 const App = () => {

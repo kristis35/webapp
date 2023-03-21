@@ -14,7 +14,7 @@ const Label = styled.label`
   font-weight: bold;
   font-family: ${(props) => props.theme.fonts.Default};
   padding: 4px 8px 4px 8px;
-  margin: 4px;
+  margin: 2px;
   color: ${(props) => props.theme.colors.White};
 `;
 

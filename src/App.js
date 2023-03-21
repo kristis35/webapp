@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NavigationBar, Theme } from './components';
-import { Login, Registration, UserInteface } from './pages';
+import { Home, Login, Registration, UserInteface } from './pages';
 import { DataContext } from './utils';
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
             <Route path='/'>
               <Route
                 index
-                element={<div>ACT Webapp</div>}
+                element={<Home />}
               />
               <Route
                 path='login'

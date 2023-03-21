@@ -5,8 +5,8 @@ const Button = styled.div`
   position: relative;
   padding: 4px 8px 4px 8px;
   cursor: pointer;
-  min-width: 84px;
-  height: 32px;
+  width: ${(props) => props.width || '36px'};
+  height: ${(props) => props.width || '36px'};
   margin: 4px;
 
   transition: all 0.2s;
@@ -21,9 +21,10 @@ const Button = styled.div`
 `;
 
 const IconButton = (props) => {
-  const { children, onClick, className } = props;
+  const { children, onClick, className, ...buttonProps } = props;
   return (
     <Button
+      {...buttonProps}
       className={className}
       onClick={onClick}
     >

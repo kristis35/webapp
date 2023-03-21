@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const Registration = () => {
-  const topBar = document.getElementById('registrationForm');
+  const topBar = document.getElementById('topBar');
   const dataContext = useContext(DataContext);
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -193,7 +193,6 @@ const Registration = () => {
   return (
     <Container topBar={topBar}>
       <Form
-        id='registrationForm'
         title='Register'
         onSubmit={handleSubmit}
         loading={loading}

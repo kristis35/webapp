@@ -34,7 +34,11 @@ const InputField = styled.input`
   font-family: ${(props) => props.theme.fonts.InriaSerif};
   color: ${(props) => props.theme.colors.White};
   background: ${(props) => `${props.theme.colors.Black}E5`};
-  border: 2px solid ${(props) => props.theme.colors.DarkGray};
+  border: 2px solid
+    ${(props) =>
+      props.errorMessage
+        ? props.theme.colors.Red
+        : props.theme.colors.DarkGray};
   border-radius: 8px;
   padding: 4px 8px 4px 8px;
   outline: none;
@@ -45,7 +49,10 @@ const InputField = styled.input`
   }
 
   &:focus {
-    border-color: ${(props) => props.theme.colors.LightGray};
+    border-color: ${(props) =>
+      props.errorMessage
+        ? props.theme.colors.Red
+        : props.theme.colors.LightGray};
   }
 `;
 
@@ -62,7 +69,7 @@ const ErrorMessage = styled.span`
   font-family: ${(props) => props.theme.fonts.Default};
   color: ${(props) => props.theme.colors.Red};
   padding: 4px 8px 4px 8px;
-  margin: 4px;
+  margin: 2px;
 `;
 
 const Input = (props) => {
@@ -87,8 +94,9 @@ const Input = (props) => {
         onChange={(e) => onChange(e)}
         onBlur={handleFocus}
         onFocus={handleFocus}
+        errorMessage={errorMessage}
       />
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <ErrorMessage>{errorMessage || ''}</ErrorMessage>
     </InputContainer>
   );
 };

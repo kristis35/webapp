@@ -1,76 +1,41 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
-import { ContainedButton } from '../../components';
-import { useSave } from '../../utils';
-import { DataContext } from '../../utils';
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  // font-family: Arial, sans-serif;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  background-color: ${(props) => `${props.theme.colors.White}7F`};
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-`;
-
-const Title = styled.h2`
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 24px;
-  text-align: center;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-`;
-
-const Label = styled.label`
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  transition: border-color 0.2s ease-in-out;
-
-  &:focus {
-    border-color: #0077cc;
-  }
-`;
+import { Form, Input } from '../../components';
+import { useSave, DataContext } from '../../utils';
 
 const Registration = () => {
   const dataContext = useContext(DataContext);
-  const theme = useTheme();
   const navigate = useNavigate();
-
-  const [registrationDetails, setRegistrationDetails] = useState({
-    name: '',
-    surname: '',
-    username: '',
-    email: '',
-    phoneNumber: '',
-    password: '',
-    confirmPassword: ''
+  const [credentials, setCredentials] = useState({
+    name: {
+      value: '',
+      errorMessage: ''
+    },
+    surname: {
+      value: '',
+      errorMessage: ''
+    },
+    username: {
+      value: '',
+      errorMessage: ''
+    },
+    email: {
+      value: '',
+      errorMessage: ''
+    },
+    phoneNumber: {
+      value: '',
+      errorMessage: ''
+    },
+    password: {
+      value: '',
+      errorMessage: ''
+    },
+    confirmPassword: {
+      value: '',
+      errorMessage: ''
+    }
   });
-
-  const [errors, setErrors] = useState([]);
 
   const { response, loading, error, save } = useSave(
     `${dataContext.API}/user/register`
@@ -83,168 +48,213 @@ const Registration = () => {
   }, [response]);
 
   useEffect(() => {
-    if (
-      error?.response &&
-      error?.response.data &&
-      error?.response.data.message
-    ) {
-      console.error(`Error: ${error.response.data.message}`);
-      // handle the error message here
-    } else if (error) {
-      console.error(error);
+    if (error?.response?.data?.errors?.length > 0) {
+      mapErrors(error.response.data.errors);
     }
   }, [error]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: {
+        value: e.target.value,
+        errorMessage: ''
+      }
+    });
+  };
+
+  const checkForErrors = () => {
+    let hasErrors = false;
     const validationErrors = [];
+
     // Check name
-    if (!registrationDetails?.name) {
-      validationErrors.push('Name is required');
+    if (credentials.name?.value === '') {
+      validationErrors.push({
+        propertyName: 'name',
+        errorMessage: 'Required'
+      });
     }
+
+    // Check surname
+    if (credentials.surname?.value === '') {
+      validationErrors.push({
+        propertyName: 'surname',
+        errorMessage: 'Required'
+      });
+    }
+
+    // Check username
+    if (credentials.username?.value === '') {
+      validationErrors.push({
+        propertyName: 'username',
+        errorMessage: 'Required'
+      });
+    }
+
     // Check email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(registrationDetails?.email)) {
-      validationErrors.push('Please enter a valid email address');
+    if (credentials.email?.value === '') {
+      validationErrors.push({
+        propertyName: 'email',
+        errorMessage: 'Required'
+      });
+    } else if (!emailRegex.test(credentials.email.value)) {
+      validationErrors.push({
+        propertyName: 'email',
+        errorMessage: 'Please enter a valid email address'
+      });
     }
+
     // Check password
-    if (registrationDetails?.password?.length < 6) {
-      validationErrors.push('Password must be at least 6 characters long');
+    if (credentials.password?.value === '') {
+      validationErrors.push({
+        propertyName: 'password',
+        errorMessage: 'Required'
+      });
+    } else if (credentials.password.value.length < 6) {
+      validationErrors.push({
+        propertyName: 'password',
+        errorMessage: 'Password must be at least 6 characters long'
+      });
     }
-    if (
-      registrationDetails?.password !== registrationDetails?.confirmPassword
+
+    // Check comfirm password
+    if (credentials.confirmPassword?.value === '') {
+      validationErrors.push({
+        propertyName: 'confirmPassword',
+        errorMessage: 'Required'
+      });
+    } else if (
+      credentials.password?.value !== '' &&
+      credentials.password.value !== credentials.confirmPassword.value
     ) {
-      validationErrors.push('Passwords do not match');
+      validationErrors.push({
+        propertyName: 'confirmPassword',
+        errorMessage: 'Passwords do not match'
+      });
     }
-    setErrors(validationErrors);
-    if (validationErrors?.length === 0) {
-      const request = {
-        ...registrationDetails
+
+    if (validationErrors.length > 0) {
+      hasErrors = true;
+      mapErrors(validationErrors);
+    }
+
+    if (error?.response?.data?.errors?.length > 0) {
+      hasErrors = true;
+    }
+
+    return hasErrors;
+  };
+
+  const mapErrors = (array) => {
+    let updatedCredentials = { ...credentials };
+
+    array.forEach((x) => {
+      updatedCredentials = {
+        ...updatedCredentials,
+        [x.propertyName]: {
+          ...updatedCredentials[x.propertyName],
+          errorMessage: x.errorMessage
+        }
       };
-      delete request.confirmPassword;
+    });
+
+    setCredentials(updatedCredentials);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const hasErrors = checkForErrors();
+
+    if (!hasErrors) {
+      const request = {
+        name: credentials.name.value,
+        surname: credentials.surname.value,
+        username: credentials.username.value,
+        email: credentials.email.value,
+        phoneNumber: credentials.phoneNumber.value,
+        password: credentials.password.value
+      };
       save(request);
     }
   };
 
   return (
-    <FormContainer>
-      <Form onSubmit={handleSubmit}>
-        <Title>Registration Form</Title>
-        <InputContainer>
-          <Label htmlFor='firstName'>First Name</Label>
-          <Input
-            type='text'
-            id='firstName'
-            value={registrationDetails?.name}
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                name: e.target.value
-              })
-            }
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label htmlFor='lastName'>Last Name</Label>
-          <Input
-            type='text'
-            id='lastName'
-            value={registrationDetails?.surname}
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                surname: e.target.value
-              })
-            }
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label htmlFor='username'>Username</Label>
-          <Input
-            type='text'
-            id='username'
-            value={registrationDetails?.username}
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                username: e.target.value
-              })
-            }
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label htmlFor='email'>Email</Label>
-          <Input
-            type='email'
-            id='email'
-            value={registrationDetails?.email}
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                email: e.target.value
-              })
-            }
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label htmlFor='phoneNumber'>Phone Number</Label>
-          <Input
-            type='tel'
-            id='phoneNumber'
-            value={registrationDetails?.phoneNumber}
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                phoneNumber: e.target.value
-              })
-            }
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label htmlFor='password'>Password</Label>
-          <Input
-            type='password'
-            id='password'
-            value={registrationDetails?.password}
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                password: e.target.value
-              })
-            }
-          />
-        </InputContainer>
-        <InputContainer>
-          <Label htmlFor='confirmPassword'>Confirm Password</Label>
-          <Input
-            type='password'
-            id='confirmPassword'
-            value={registrationDetails?.confirmPassword}
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                confirmPassword: e.target.value
-              })
-            }
-          />
-        </InputContainer>
-
-        {errors?.length > 0 && (
-          <ul>
-            {errors.map((error) => (
-              <li key={error}>{error}</li>
-            ))}
-          </ul>
-        )}
-
-        <ContainedButton
-          value='Submit'
-          color={theme.colors.PurpleBlue}
-          loading={loading}
-          type='submit'
-        />
-      </Form>
-    </FormContainer>
+    <Form
+      title='Register'
+      onSubmit={handleSubmit}
+      loading={loading}
+    >
+      <Input
+        type='text'
+        label='Name'
+        name='name'
+        value={credentials.name?.value}
+        onChange={handleChange}
+        placeholder='Name'
+        required
+        errorMessage={credentials.name?.errorMessage}
+      />
+      <Input
+        type='text'
+        label='Surname'
+        name='surname'
+        value={credentials.surname?.value}
+        onChange={handleChange}
+        placeholder='Surname'
+        required
+        errorMessage={credentials.surname?.errorMessage}
+      />
+      <Input
+        type='text'
+        label='Username'
+        name='username'
+        value={credentials.username?.value}
+        onChange={handleChange}
+        placeholder='Username'
+        required
+        errorMessage={credentials.username?.errorMessage}
+      />
+      <Input
+        type='text'
+        label='Email'
+        name='email'
+        value={credentials.email?.value}
+        onChange={handleChange}
+        placeholder='Email'
+        required
+        errorMessage={credentials.email?.errorMessage}
+      />
+      <Input
+        type='text'
+        label='Phone Number'
+        name='phoneNumber'
+        value={credentials.phoneNumber?.value}
+        onChange={handleChange}
+        placeholder='Phone Number'
+        errorMessage={credentials.phoneNumber?.errorMessage}
+      />
+      <Input
+        type='password'
+        label='Password'
+        name='password'
+        value={credentials.password?.value}
+        onChange={handleChange}
+        placeholder='Password'
+        required
+        errorMessage={credentials.password?.errorMessage}
+      />
+      <Input
+        type='password'
+        label='Confirm Password'
+        name='confirmPassword'
+        value={credentials.confirmPassword?.value}
+        onChange={handleChange}
+        placeholder='Confirm Password'
+        required
+        errorMessage={credentials.confirmPassword?.errorMessage}
+      />
+    </Form>
   );
 };
 

@@ -4,9 +4,11 @@ import { Login, Registration, UserInteface } from './pages';
 import { DataContext } from './utils';
 
 const App = () => {
-  const apiName = 'http://localhost:8080';
+  const dataContext = {
+    API: 'http://localhost:8080'
+  };
   return (
-    <DataContext.Provider value={{ API: apiName }}>
+    <DataContext.Provider value={dataContext}>
       <Theme>
         <Router>
           <NavigationBar />

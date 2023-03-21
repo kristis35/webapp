@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input } from '../../components';
-import { useSave } from '../../utils';
-import { DataContext } from '../../utils';
+import { useSave, DataContext } from '../../utils';
 
 const Login = () => {
   const dataContext = useContext(DataContext);
   const navigate = useNavigate();
-  const [hasErrors, setHasErrors] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState('');
   const [credentials, setCredentials] = useState({
     username: {
@@ -49,35 +47,56 @@ const Login = () => {
   };
 
   const checkForErrors = () => {
-    setHasErrors(false);
+    let hasErrors = false;
+    const validationErrors = [];
 
+    // Check username
     if (credentials.username?.value === '') {
-      setHasErrors(true);
-      setCredentials({
-        ...credentials,
-        username: {
-          ...credentials.username,
-          errorMessage: 'Required'
-        }
+      validationErrors.push({
+        propertyName: 'username',
+        errorMessage: 'Required'
       });
     }
 
+    // Check password
     if (credentials.password?.value === '') {
-      setHasErrors(true);
-      setCredentials({
-        ...credentials,
-        password: {
-          ...credentials.password,
-          errorMessage: 'Required'
-        }
+      validationErrors.push({
+        propertyName: 'password',
+        errorMessage: 'Required'
       });
     }
+
+    if (validationErrors.length > 0) {
+      hasErrors = true;
+      mapErrors(validationErrors);
+    }
+
+    if (formErrorMessage) {
+      hasErrors = true;
+    }
+
+    return hasErrors;
+  };
+
+  const mapErrors = (array) => {
+    let updatedCredentials = { ...credentials };
+
+    array.forEach((x) => {
+      updatedCredentials = {
+        ...updatedCredentials,
+        [x.propertyName]: {
+          ...updatedCredentials[x.propertyName],
+          errorMessage: x.errorMessage
+        }
+      };
+    });
+
+    setCredentials(updatedCredentials);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    checkForErrors();
+    const hasErrors = checkForErrors();
 
     if (!hasErrors) {
       save(null, {

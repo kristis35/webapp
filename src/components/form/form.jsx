@@ -54,7 +54,7 @@ const Form = (props) => {
         <ContainedButton
           size='xs'
           value={submitButtonTitle || 'Submit'}
-          color={submitButtonColor || theme.colors.DarkGreen}
+          color={submitButtonColor || theme.colors.SkyBlue}
           icon={
             <ArrowRightIcon
               color={theme.colors.Black}

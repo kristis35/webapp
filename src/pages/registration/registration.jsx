@@ -8,9 +8,11 @@ import { useSave, DataContext } from '../../utils';
 const Container = styled.div`
   height: calc(100% - ${(props) => props.topBar?.offsetHeight || 0}px);
   background-image: url(${credentialsPhoto});
-  background-size: cover;
   background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
+  background-attachment: fixed;
+  overflow: auto;
 `;
 
 const Registration = () => {

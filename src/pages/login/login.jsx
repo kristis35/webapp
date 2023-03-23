@@ -43,8 +43,10 @@ const Login = () => {
   }, [response]);
 
   useEffect(() => {
-    if (error) {
+    if (error?.response?.status === 401) {
       setFormErrorMessage('Username or password is incorrect');
+    } else {
+      setFormErrorMessage(' ');
     }
   }, [error]);
 

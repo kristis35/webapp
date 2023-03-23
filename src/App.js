@@ -1,6 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NavigationBar, Theme } from './components';
-import { Home, Login, Registration,Profile,UserInteface,Contact,Editprofile } from './pages';
+import {
+  Home,
+  Login,
+  Registration,
+  Profile,
+  UserInteface,
+  Contact,
+  EditProfile
+} from './pages';
 import { DataContext } from './utils';
 
 const App = () => {
@@ -40,7 +48,7 @@ const App = () => {
               />
               <Route
                 path='profile/edit'
-                element={<Editprofile />}
+                element={<EditProfile />}
               />
             </Route>
           </Routes>

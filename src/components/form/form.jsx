@@ -1,6 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import styled, { useTheme } from 'styled-components';
-import { ContainedButton } from '../button';
+import { ContainedButton, OutlinedButton } from '../button';
 import { ArrowRightIcon } from '../icons';
 
 const FormContainer = styled.div`
@@ -8,6 +9,12 @@ const FormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+`;
+
+const ActionButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: left;
 `;
 
 const FormElement = styled.form`
@@ -35,13 +42,18 @@ const ErrorMessage = styled.span`
 `;
 
 const Form = (props) => {
+  const navigate = useNavigate();
   const {
     title,
     onSubmit,
     loading,
     errorMessage,
+    showSubmitButton = true,
     submitButtonTitle,
     submitButtonColor,
+    showCancelButton = true,
+    submitCancelTitle,
+    submitCancelColor,
     children
   } = props;
   const theme = useTheme();
@@ -51,21 +63,33 @@ const Form = (props) => {
         <Title>{title}</Title>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         {children}
-        <ContainedButton
-          size='xs'
-          value={submitButtonTitle || 'Submit'}
-          color={submitButtonColor || theme.colors.SkyBlue}
-          icon={
-            <ArrowRightIcon
-              color={theme.colors.Black}
-              height={24}
-              width={24}
+        <ActionButtonsContainer>
+          {showSubmitButton && (
+            <ContainedButton
+              size='xs'
+              value={submitButtonTitle || 'Submit'}
+              color={submitButtonColor || theme.colors.PurpleBlue}
+              icon={
+                <ArrowRightIcon
+                  color={theme.colors.Black}
+                  height={24}
+                  width={24}
+                />
+              }
+              iconPossition='right'
+              loading={loading}
+              type='submit'
             />
-          }
-          iconPossition='right'
-          loading={loading}
-          type='submit'
-        />
+          )}
+          {showCancelButton && (
+            <OutlinedButton
+              size='xs'
+              value={submitCancelTitle || 'Cancel'}
+              color={submitCancelColor || theme.colors.PurpleBlue}
+              onClick={() => navigate(-1)}
+            />
+          )}
+        </ActionButtonsContainer>
       </FormElement>
     </FormContainer>
   );

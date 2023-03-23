@@ -133,7 +133,7 @@ const NavigationBar = () => {
             <>
               <ContainedButton
                 value='Profile'
-                color={theme.colors.SkyBlue}
+                color={theme.colors.PurpleBlue}
                 onClick={() => navigate('/profile')}
               />
               <OutlinedButton
@@ -141,7 +141,6 @@ const NavigationBar = () => {
                 color={theme.colors.PurpleBlue}
                 onClick={logOut}
               />
-              
             </>
           )}
         </NavigationButtonsContainer>

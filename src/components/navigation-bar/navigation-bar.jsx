@@ -131,11 +131,17 @@ const NavigationBar = () => {
           )}
           {token && (
             <>
+              <ContainedButton
+                value='Profile'
+                color={theme.colors.SkyBlue}
+                onClick={() => navigate('/profile')}
+              />
               <OutlinedButton
                 value='Log Out'
                 color={theme.colors.PurpleBlue}
                 onClick={logOut}
               />
+              
             </>
           )}
         </NavigationButtonsContainer>

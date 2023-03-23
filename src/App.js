@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NavigationBar, Theme } from './components';
-import { Login, Registration, UserInteface } from './pages';
+import { Login, UserInteface,Profile,Registration,Contact,Editprofile } from './pages';
 import { DataContext } from './utils';
 
 const App = () => {
@@ -29,6 +29,18 @@ const App = () => {
               <Route
                 path='ui'
                 element={<UserInteface />}
+              />
+              <Route
+                path='profile'
+                element={<Profile />}
+              />
+              <Route
+                path='contact-us'
+                element={<Contact />}
+              />
+              <Route
+                path='profile/edit'
+                element={<Editprofile />}
               />
             </Route>
           </Routes>

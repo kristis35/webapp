@@ -2,13 +2,13 @@ import React from 'react';
 import { useTheme } from 'styled-components';
 
 const IconBase = (props) => {
-  const { height, width, color, children } = props;
+  const { height = 36, width = 36, color, children } = props;
   const theme = useTheme();
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      height={height || '36px'}
-      width={width || '36px'}
+      height={`${height}px`}
+      width={`${width}px`}
       viewBox='0 0 24 24'
       fill={color || theme.colors.WarmWhite}
     >

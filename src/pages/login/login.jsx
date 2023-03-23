@@ -1,9 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import credentialsPhoto from '../../assets/backgrounds/credentials-page.png';
 import { Form, Input } from '../../components';
 import { useSave, DataContext } from '../../utils';
 
+const Container = styled.div`
+  height: calc(100% - ${(props) => props.topBar?.offsetHeight || 0}px);
+  background-image: url(${credentialsPhoto});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
 const Login = () => {
+  const topBar = document.getElementById('topBar');
   const dataContext = useContext(DataContext);
   const navigate = useNavigate();
   const [formErrorMessage, setFormErrorMessage] = useState('');
@@ -112,33 +123,35 @@ const Login = () => {
   };
 
   return (
-    <Form
-      title='Login'
-      onSubmit={handleSubmit}
-      loading={loading}
-      errorMessage={formErrorMessage}
-    >
-      <Input
-        type='text'
-        label='Username'
-        name='username'
-        value={credentials.username?.value}
-        onChange={handleChange}
-        placeholder='Username'
-        required
-        errorMessage={credentials.username?.errorMessage}
-      />
-      <Input
-        type='password'
-        label='Password'
-        name='password'
-        value={credentials.password?.value}
-        onChange={handleChange}
-        placeholder='Password'
-        required
-        errorMessage={credentials.password?.errorMessage}
-      />
-    </Form>
+    <Container topBar={topBar}>
+      <Form
+        title='Login'
+        onSubmit={handleSubmit}
+        loading={loading}
+        errorMessage={formErrorMessage}
+      >
+        <Input
+          type='text'
+          label='Username'
+          name='username'
+          value={credentials.username?.value}
+          onChange={handleChange}
+          placeholder='Username'
+          required
+          errorMessage={credentials.username?.errorMessage}
+        />
+        <Input
+          type='password'
+          label='Password'
+          name='password'
+          value={credentials.password?.value}
+          onChange={handleChange}
+          placeholder='Password'
+          required
+          errorMessage={credentials.password?.errorMessage}
+        />
+      </Form>
+    </Container>
   );
 };
 

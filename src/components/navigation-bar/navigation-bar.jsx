@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ContainedButton, IconButton, MenuIcon, OutlinedButton } from '..';
+import {
+  ContainedButton,
+  IconButton,
+  Logo,
+  MenuIcon,
+  OutlinedButton
+} from '..';
 import { useTheme } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -55,12 +61,17 @@ const SideBar = styled.div`
   transform: translateX(${(props) => `${props.isOpen ? 0 : -300}px`});
 `;
 
-const MenuButtonContainer = styled.div``;
+const MenuButtonContainer = styled.div`
+  width='300px'
+`;
+
+const LogoContainer = styled.div``;
 
 const NavigationButtonsContainer = styled.div`
   margin-top: auto;
   margin-bottom: auto;
   padding-right: 8px;
+  width='300px'
 `;
 
 const NavigationBar = () => {
@@ -82,12 +93,18 @@ const NavigationBar = () => {
 
   return (
     <>
-      <TopBar>
+      <TopBar id='topBar'>
         <MenuButtonContainer>
           <IconButton onClick={() => toggleSideBar()}>
             <MenuIcon />
           </IconButton>
         </MenuButtonContainer>
+        <LogoContainer>
+          <Logo
+            height='52px'
+            width='104px'
+          />
+        </LogoContainer>
         <NavigationButtonsContainer>
           {!token && location.pathname === '/' && (
             <>

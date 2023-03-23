@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContainedButton, Input, OutlinedButton } from '../../components';
+import { ContainedButton, Input, Logo, OutlinedButton } from '../../components';
 import { useTheme } from 'styled-components';
 
 const clickMe = (text) => {
@@ -63,6 +63,12 @@ const UserInteface = () => {
           size='lg'
           placeholder='Placeholder'
           errorMessage='This is an error'
+        />
+      </div>
+      <div>
+        <Logo
+          height='392px'
+          width='582px'
         />
       </div>
     </div>

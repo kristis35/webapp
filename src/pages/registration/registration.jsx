@@ -1,9 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import credentialsPhoto from '../../assets/backgrounds/credentials-page.png';
 import { Form, Input } from '../../components';
 import { useSave, DataContext } from '../../utils';
 
+const Container = styled.div`
+  height: calc(100% - ${(props) => props.topBar?.offsetHeight || 0}px);
+  background-image: url(${credentialsPhoto});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
 const Registration = () => {
+  const topBar = document.getElementById('topBar');
   const dataContext = useContext(DataContext);
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -180,81 +191,83 @@ const Registration = () => {
   };
 
   return (
-    <Form
-      title='Register'
-      onSubmit={handleSubmit}
-      loading={loading}
-    >
-      <Input
-        type='text'
-        label='Name'
-        name='name'
-        value={credentials.name?.value}
-        onChange={handleChange}
-        placeholder='Name'
-        required
-        errorMessage={credentials.name?.errorMessage}
-      />
-      <Input
-        type='text'
-        label='Surname'
-        name='surname'
-        value={credentials.surname?.value}
-        onChange={handleChange}
-        placeholder='Surname'
-        required
-        errorMessage={credentials.surname?.errorMessage}
-      />
-      <Input
-        type='text'
-        label='Username'
-        name='username'
-        value={credentials.username?.value}
-        onChange={handleChange}
-        placeholder='Username'
-        required
-        errorMessage={credentials.username?.errorMessage}
-      />
-      <Input
-        type='text'
-        label='Email'
-        name='email'
-        value={credentials.email?.value}
-        onChange={handleChange}
-        placeholder='Email'
-        required
-        errorMessage={credentials.email?.errorMessage}
-      />
-      <Input
-        type='text'
-        label='Phone Number'
-        name='phoneNumber'
-        value={credentials.phoneNumber?.value}
-        onChange={handleChange}
-        placeholder='Phone Number'
-        errorMessage={credentials.phoneNumber?.errorMessage}
-      />
-      <Input
-        type='password'
-        label='Password'
-        name='password'
-        value={credentials.password?.value}
-        onChange={handleChange}
-        placeholder='Password'
-        required
-        errorMessage={credentials.password?.errorMessage}
-      />
-      <Input
-        type='password'
-        label='Confirm Password'
-        name='confirmPassword'
-        value={credentials.confirmPassword?.value}
-        onChange={handleChange}
-        placeholder='Confirm Password'
-        required
-        errorMessage={credentials.confirmPassword?.errorMessage}
-      />
-    </Form>
+    <Container topBar={topBar}>
+      <Form
+        title='Register'
+        onSubmit={handleSubmit}
+        loading={loading}
+      >
+        <Input
+          type='text'
+          label='Name'
+          name='name'
+          value={credentials.name?.value}
+          onChange={handleChange}
+          placeholder='Name'
+          required
+          errorMessage={credentials.name?.errorMessage}
+        />
+        <Input
+          type='text'
+          label='Surname'
+          name='surname'
+          value={credentials.surname?.value}
+          onChange={handleChange}
+          placeholder='Surname'
+          required
+          errorMessage={credentials.surname?.errorMessage}
+        />
+        <Input
+          type='text'
+          label='Username'
+          name='username'
+          value={credentials.username?.value}
+          onChange={handleChange}
+          placeholder='Username'
+          required
+          errorMessage={credentials.username?.errorMessage}
+        />
+        <Input
+          type='text'
+          label='Email'
+          name='email'
+          value={credentials.email?.value}
+          onChange={handleChange}
+          placeholder='Email'
+          required
+          errorMessage={credentials.email?.errorMessage}
+        />
+        <Input
+          type='text'
+          label='Phone Number'
+          name='phoneNumber'
+          value={credentials.phoneNumber?.value}
+          onChange={handleChange}
+          placeholder='Phone Number'
+          errorMessage={credentials.phoneNumber?.errorMessage}
+        />
+        <Input
+          type='password'
+          label='Password'
+          name='password'
+          value={credentials.password?.value}
+          onChange={handleChange}
+          placeholder='Password'
+          required
+          errorMessage={credentials.password?.errorMessage}
+        />
+        <Input
+          type='password'
+          label='Confirm Password'
+          name='confirmPassword'
+          value={credentials.confirmPassword?.value}
+          onChange={handleChange}
+          placeholder='Confirm Password'
+          required
+          errorMessage={credentials.confirmPassword?.errorMessage}
+        />
+      </Form>
+    </Container>
   );
 };
 

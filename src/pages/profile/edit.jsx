@@ -3,7 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Input } from '../../components';
 import { useUpdate, DataContext } from '../../utils';
 import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
+
+const Background = styled.div`
+  background-image: url('https://images4.alphacoders.com/835/83516.jpg');
+  background-size: cover;
+  width: 2400px;
+  height: 1080px;
+  background-position: center center;
+`;
+
+const FormElement = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  margin-right: 300px;
+`;
 
 const Editprofile = () => {
     const token = localStorage.getItem('token');
@@ -143,6 +159,8 @@ const Editprofile = () => {
     };
   
     return (
+      <Background>
+        <FormElement>
       <Form
         title='Edit profile'
         onSubmit={handleSubmit}
@@ -184,6 +202,8 @@ const Editprofile = () => {
           errorMessage={credentials.phoneNumber?.errorMessage}
         />
       </Form>
+      </FormElement>
+      </Background>
     );
   };
   

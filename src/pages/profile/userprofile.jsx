@@ -18,13 +18,13 @@ const Userinfo = styled.div`
   font-color: white;
   margin-left: 1px;
 `;
-// const Background = styled.div`
-//   background-image: url('https://images4.alphacoders.com/835/83516.jpg');
-//   background-size: cover;
-//   width: 2400px;
-//   height: 1080px;
-//   background-position: center center;
-// `;
+const Background = styled.div`
+  background-image: url('https://images4.alphacoders.com/835/83516.jpg');
+  background-size: cover;
+  width: 2400px;
+  height: 1080px;
+  background-position: center center;
+`;
 
 const FormContainer = styled.div`
   display: flex;
@@ -62,6 +62,7 @@ const FormElement = styled.form`
   border: 3px solid ${(props) => props.theme.colors.BlazeBlue};
   padding: 20px;
   border-radius: 40px;
+  margin-right: 300px;
 `;
 
 function userprofile({ user }) {
@@ -69,7 +70,7 @@ function userprofile({ user }) {
     const theme = useTheme();
     const navigate = useNavigate();
   return (
-    //<Background>
+    <Background>
   
     <FormContainer>
       <FormElement>
@@ -98,7 +99,7 @@ function userprofile({ user }) {
           </ContainedButton>
       </FormElement>
     </FormContainer>
-    //</Background>
+    </Background>
   );
 }
 

@@ -19,19 +19,25 @@ const SmallText = styled.div`
     margin: auto;
 `;
 
-// const Background = styled.div`
-//   background-image: url('https://images4.alphacoders.com/835/83516.jpg');
-//   background-size: cover;
-//   width: 2400px;
-//   height: 1080px;
-//   background-position: center center;
-// `;
+const Background = styled.div`
+  background-image: url('https://images4.alphacoders.com/835/83516.jpg');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  width: 2400px;
+  height: 1080px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 10px;
+`;
 
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  margin-right: 10px;
 `;
 
 const FormElement = styled.form`
@@ -43,6 +49,7 @@ const FormElement = styled.form`
   padding: 20px;
   align-items: center;
   border-radius: 40px;
+  margin-right: 300px;
 `;
 
 const Table = styled.ul`
@@ -62,7 +69,7 @@ const Row = styled.li`
 
 function Contact() {
   return (
-    // <Background>
+    <Background>
         <FormContainer>
             <FormElement>
             <BigText>Contact Us</BigText>
@@ -76,7 +83,7 @@ function Contact() {
             </SmallText>
             </FormElement>
         </FormContainer>
-    // </Background>
+    </Background>
   );
 }
 

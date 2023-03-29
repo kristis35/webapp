@@ -25,7 +25,11 @@ const useRemove = (url) => {
     deleteData(config);
   };
 
-  return { response, loading, error, remove };
+  const clearError = () => {
+    setError(null);
+  };
+
+  return { response, loading, error, remove, clearError };
 };
 
 export default useRemove;

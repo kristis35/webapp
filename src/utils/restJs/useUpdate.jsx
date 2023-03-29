@@ -25,7 +25,11 @@ const useUpdate = (url) => {
     updateData(request, config);
   };
 
-  return { response, loading, error, update };
+  const clearError = () => {
+    setError(null);
+  };
+
+  return { response, loading, error, update, clearError };
 };
 
 export default useUpdate;

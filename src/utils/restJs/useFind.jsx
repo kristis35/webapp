@@ -25,7 +25,11 @@ const useFind = (url) => {
     fetchData(config);
   };
 
-  return { response, loading, error, find };
+  const clearError = () => {
+    setError(null);
+  };
+
+  return { response, loading, error, find, clearError };
 };
 
 export default useFind;

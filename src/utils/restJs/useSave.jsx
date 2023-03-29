@@ -25,7 +25,11 @@ const useSave = (url) => {
     saveData(request, config);
   };
 
-  return { response, loading, error, save };
+  const clearError = () => {
+    setError(null);
+  };
+
+  return { response, loading, error, save, clearError };
 };
 
 export default useSave;

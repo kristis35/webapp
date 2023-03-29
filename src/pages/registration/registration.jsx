@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import credentialsPhoto from '../../assets/backgrounds/credentials-page.png';
 import { Form, Input } from '../../components';
 import { useSave, DataContext } from '../../utils';
@@ -15,9 +15,10 @@ const Container = styled.div`
   overflow: auto;
 `;
 
-const Registration = () => {
+const Registration = (props) => {
   const topBar = document.getElementById('topBar');
   const dataContext = useContext(DataContext);
+  const theme = useTheme();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     name: {
@@ -50,12 +51,18 @@ const Registration = () => {
     }
   });
 
-  const { response, loading, error, save } = useSave(
+  const { response, loading, error, save, clearError } = useSave(
     `${dataContext.API}/user/register`
   );
 
   useEffect(() => {
     if (response?.status === 201) {
+      props.setSnackbar({
+        color: theme.colors.DarkGreen,
+        message: 'Registration successful!'
+      });
+      props.snackbarRef.current.show();
+
       navigate('/login');
     }
   }, [response]);
@@ -74,6 +81,10 @@ const Registration = () => {
         errorMessage: ''
       }
     });
+
+    if (error) {
+      clearError();
+    }
   };
 
   const checkForErrors = () => {

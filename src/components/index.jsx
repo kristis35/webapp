@@ -6,3 +6,4 @@ export * from './icon-button';
 export * from './input';
 export * from './form';
 export * from './logo';
+export * from './snackbar';

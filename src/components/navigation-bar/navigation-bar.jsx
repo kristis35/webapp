@@ -74,7 +74,7 @@ const NavigationButtonsContainer = styled.div`
   width='300px'
 `;
 
-const NavigationBar = () => {
+const NavigationBar = (props) => {
   const token = localStorage.getItem('token');
 
   const theme = useTheme();
@@ -88,6 +88,11 @@ const NavigationBar = () => {
 
   const logOut = () => {
     localStorage.removeItem('token');
+    props.setSnackbar({
+      message: 'See you soon!'
+    });
+    props.snackbarRef.current.show();
+
     navigate('/');
   };
 

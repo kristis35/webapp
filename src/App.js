@@ -1,5 +1,6 @@
+import { useRef, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { NavigationBar, Theme } from './components';
+import { NavigationBar, Snackbar, Theme } from './components';
 import {
   Home,
   Login,
@@ -15,11 +16,18 @@ const App = () => {
   const dataContext = {
     API: 'http://localhost:8080'
   };
+
+  const snackbarRef = useRef(null);
+  const [snackbar, setSnackbar] = useState({});
+
   return (
     <DataContext.Provider value={dataContext}>
       <Theme>
         <Router>
-          <NavigationBar />
+          <NavigationBar
+            snackbarRef={snackbarRef}
+            setSnackbar={setSnackbar}
+          />
           <Routes>
             <Route path='/'>
               <Route
@@ -28,11 +36,21 @@ const App = () => {
               />
               <Route
                 path='login'
-                element={<Login />}
+                element={
+                  <Login
+                    snackbarRef={snackbarRef}
+                    setSnackbar={setSnackbar}
+                  />
+                }
               />
               <Route
                 path='register'
-                element={<Registration />}
+                element={
+                  <Registration
+                    snackbarRef={snackbarRef}
+                    setSnackbar={setSnackbar}
+                  />
+                }
               />
               <Route
                 path='ui'
@@ -52,6 +70,10 @@ const App = () => {
               />
             </Route>
           </Routes>
+          <Snackbar
+            ref={snackbarRef}
+            snackbar={snackbar}
+          />
         </Router>
       </Theme>
     </DataContext.Provider>

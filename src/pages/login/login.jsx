@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import credentialsPhoto from '../../assets/backgrounds/credentials-page.png';
 import { Form, Input } from '../../components';
 import { useSave, DataContext } from '../../utils';
@@ -15,9 +15,10 @@ const Container = styled.div`
   overflow: auto;
 `;
 
-const Login = () => {
+const Login = (props) => {
   const topBar = document.getElementById('topBar');
   const dataContext = useContext(DataContext);
+  const theme = useTheme();
   const navigate = useNavigate();
   const [formErrorMessage, setFormErrorMessage] = useState('');
   const [credentials, setCredentials] = useState({
@@ -31,13 +32,20 @@ const Login = () => {
     }
   });
 
-  const { response, loading, error, save } = useSave(
+  const { response, loading, error, save, clearError } = useSave(
     `${dataContext.API}/login`
   );
 
   useEffect(() => {
     if (response?.status === 200 && response?.headers?.authorization) {
       localStorage.setItem('token', response.headers.authorization);
+
+      props.setSnackbar({
+        color: theme.colors.DarkGreen,
+        message: 'Login successful!'
+      });
+      props.snackbarRef.current.show();
+
       navigate('/');
     }
   }, [response]);
@@ -59,6 +67,10 @@ const Login = () => {
         errorMessage: ''
       }
     });
+
+    if (error) {
+      clearError();
+    }
   };
 
   const checkForErrors = () => {

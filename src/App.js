@@ -8,7 +8,8 @@ import {
   Profile,
   UserInteface,
   Contact,
-  EditProfile
+  EditProfile,
+  CreateTask
 } from './pages';
 import { DataContext } from './utils';
 
@@ -67,6 +68,15 @@ const App = () => {
               <Route
                 path='profile/edit'
                 element={<EditProfile />}
+              />
+              <Route
+                path='create_task'
+                element={
+                  <CreateTask
+                    snackbarRef={snackbarRef}
+                    setSnackbar={setSnackbar}
+                  />
+                }
               />
             </Route>
           </Routes>

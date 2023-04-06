@@ -137,6 +137,11 @@ const NavigationBar = (props) => {
           {token && (
             <>
               <ContainedButton
+                value='Create task'
+                color={theme.colors.PurpleBlue}
+                onClick={() => navigate('/create_task')}
+              />
+              <ContainedButton
                 value='Profile'
                 color={theme.colors.PurpleBlue}
                 onClick={() => navigate('/profile')}
@@ -146,6 +151,7 @@ const NavigationBar = (props) => {
                 color={theme.colors.PurpleBlue}
                 onClick={logOut}
               />
+              
             </>
           )}
         </NavigationButtonsContainer>

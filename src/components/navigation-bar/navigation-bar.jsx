@@ -151,7 +151,6 @@ const NavigationBar = (props) => {
                 color={theme.colors.PurpleBlue}
                 onClick={logOut}
               />
-              
             </>
           )}
         </NavigationButtonsContainer>

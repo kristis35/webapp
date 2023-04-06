@@ -15,7 +15,7 @@ const Label = styled.label`
   font-family: ${(props) => props.theme.fonts.Default};
   padding: 4px 8px 4px 8px;
   margin: 2px;
-  color: ${(props) => props.theme.colors.White};
+  color: ${(props) => props.labelColor || props.theme.colors.White};
 `;
 
 const InputField = styled.input`
@@ -74,8 +74,16 @@ const ErrorMessage = styled.span`
 
 const Input = (props) => {
   const [isFocused, setIsFocused] = useState(false);
-  const { label, type, size, onChange, required, errorMessage, ...inputProps } =
-    props;
+  const {
+    label,
+    labelColor,
+    type,
+    size,
+    onChange,
+    required,
+    errorMessage,
+    ...inputProps
+  } = props;
 
   const handleFocus = () => {
     setIsFocused(!isFocused);
@@ -83,7 +91,7 @@ const Input = (props) => {
 
   return (
     <InputContainer>
-      <Label>
+      <Label labelColor={labelColor}>
         {label}
         {required && <ErrorStar>*</ErrorStar>}
       </Label>

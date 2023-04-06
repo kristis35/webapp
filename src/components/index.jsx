@@ -7,3 +7,4 @@ export * from './input';
 export * from './form';
 export * from './logo';
 export * from './snackbar';
+export * from './popup';

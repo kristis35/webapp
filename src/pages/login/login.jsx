@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import credentialsPhoto from '../../assets/backgrounds/credentials-page.png';
-import { Form, Input } from '../../components';
+import { Form, PasswordInput, TextInput } from '../../components';
 import { useSave, DataContext } from '../../utils';
 
 const Container = styled.div`
@@ -146,20 +146,20 @@ const Login = (props) => {
         loading={loading}
         errorMessage={formErrorMessage}
       >
-        <Input
-          type='text'
+        <TextInput
           label='Username'
           name='username'
+          size='lg'
           value={credentials.username?.value}
           onChange={handleChange}
           placeholder='Username'
           required
           errorMessage={credentials.username?.errorMessage}
         />
-        <Input
-          type='password'
+        <PasswordInput
           label='Password'
           name='password'
+          size='lg'
           value={credentials.password?.value}
           onChange={handleChange}
           placeholder='Password'

@@ -126,21 +126,28 @@ const NavigationBar = (props) => {
             </>
           )}
           {location.pathname !== '/' && (
-            <>
-              <OutlinedButton
-                value='Home'
-                color={theme.colors.PurpleBlue}
-                onClick={() => navigate('/')}
-              />
-            </>
+            <OutlinedButton
+              value='Home'
+              color={theme.colors.PurpleBlue}
+              onClick={() => navigate('/')}
+            />
           )}
           {token && (
             <>
-              <ContainedButton
-                value='Create task'
-                color={theme.colors.PurpleBlue}
-                onClick={() => navigate('/create_task')}
-              />
+              {!location.pathname.includes('/solve_task') && (
+                <ContainedButton
+                  value='Solve task'
+                  color={theme.colors.PurpleBlue}
+                  onClick={() => navigate('/solve_task/1')}
+                />
+              )}
+              {location.pathname !== '/create_task' && (
+                <ContainedButton
+                  value='Create task'
+                  color={theme.colors.PurpleBlue}
+                  onClick={() => navigate('/create_task')}
+                />
+              )}
               <ContainedButton
                 value='Profile'
                 color={theme.colors.PurpleBlue}

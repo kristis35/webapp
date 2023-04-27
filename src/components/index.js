@@ -8,3 +8,6 @@ export * from './form';
 export * from './logo';
 export * from './snackbar';
 export * from './popup';
+export * from './select';
+export * from './repeater';
+export * from './code-editor';

@@ -18,8 +18,8 @@ const Label = styled.label`
   color: ${(props) => props.labelColor || props.theme.colors.White};
 `;
 
-const InputField = styled.input`
-  height: 32px;
+const TextAreaField = styled.textarea`
+  height: ${(props) => props.height || '32px'};
   min-width: 84px;
   width: ${(props) => {
     switch (props.size) {
@@ -28,7 +28,11 @@ const InputField = styled.input`
       case 'md':
         return '200px';
       case 'lg':
-        return '400px';
+        return '300px';
+      case 'xl':
+        return '440px';
+      default:
+        return props.width || 'auto';
     }
   }};
   font-family: ${(props) => props.theme.fonts.InriaSerif};
@@ -40,8 +44,9 @@ const InputField = styled.input`
         ? props.theme.colors.Red
         : props.theme.colors.DarkGray};
   border-radius: 8px;
-  padding: 4px 8px 4px 8px;
+  padding: 8px;
   outline: none;
+  resize: none;
 
   ::placeholder {
     color: ${(props) => props.theme.colors.LightGray};
@@ -72,7 +77,7 @@ const ErrorMessage = styled.span`
   margin: 2px;
 `;
 
-const Input = (props) => {
+const TextAreaInput = (props) => {
   const [isFocused, setIsFocused] = useState(false);
   const {
     label,
@@ -95,7 +100,7 @@ const Input = (props) => {
         {label}
         {required && <ErrorStar>*</ErrorStar>}
       </Label>
-      <InputField
+      <TextAreaField
         {...inputProps}
         type={type}
         size={size}
@@ -109,4 +114,4 @@ const Input = (props) => {
   );
 };
 
-export default Input;
+export default TextAreaInput;

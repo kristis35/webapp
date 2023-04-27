@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
 
 const useUpdate = (url) => {
@@ -6,28 +6,51 @@ const useUpdate = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateData = (request, config) => {
-    setLoading(true);
-    axios
-      .put(url, request, config)
-      .then((response) => {
-        setResponse(response);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
+  const updateURL = useCallback(
+    (additionalURLParams) => {
+      let URL = url;
+      additionalURLParams?.forEach((param) => {
+        URL = URL.replace(`{${param.name}}`, param.value);
       });
-  };
+      return URL;
+    },
+    [url]
+  );
 
-  const update = (request, config = null) => {
-    updateData(request, config);
-  };
+  const updateData = useCallback(
+    (request, config, additionalURLParams) => {
+      setLoading(true);
+      axios
+        .put(
+          additionalURLParams !== undefined
+            ? updateURL(additionalURLParams)
+            : url,
+          request,
+          config
+        )
+        .then((res) => {
+          setResponse(res);
+        })
+        .catch((err) => {
+          setError(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    [url, updateURL]
+  );
 
-  const clearError = () => {
+  const update = useCallback(
+    (request, config = undefined, additionalURLParams = undefined) => {
+      updateData(request, config, additionalURLParams);
+    },
+    [updateData]
+  );
+
+  const clearError = useCallback(() => {
     setError(null);
-  };
+  }, []);
 
   return { response, loading, error, update, clearError };
 };

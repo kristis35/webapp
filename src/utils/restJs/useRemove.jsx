@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
 
 const useRemove = (url) => {
@@ -6,28 +6,50 @@ const useRemove = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const deleteData = (config) => {
-    setLoading(true);
-    axios
-      .delete(url, config)
-      .then((response) => {
-        setResponse(response);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
+  const updateURL = useCallback(
+    (additionalURLParams) => {
+      let URL = url;
+      additionalURLParams?.forEach((param) => {
+        URL = URL.replace(`{${param.name}}`, param.value);
       });
-  };
+      return URL;
+    },
+    [url]
+  );
 
-  const remove = (config = null) => {
-    deleteData(config);
-  };
+  const deleteData = useCallback(
+    (config, additionalURLParams) => {
+      setLoading(true);
+      axios
+        .delete(
+          additionalURLParams !== undefined
+            ? updateURL(additionalURLParams)
+            : url,
+          config
+        )
+        .then((res) => {
+          setResponse(res);
+        })
+        .catch((err) => {
+          setError(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    [url, updateURL]
+  );
 
-  const clearError = () => {
+  const remove = useCallback(
+    (config = undefined, additionalURLParams = undefined) => {
+      deleteData(config, additionalURLParams);
+    },
+    [deleteData]
+  );
+
+  const clearError = useCallback(() => {
     setError(null);
-  };
+  }, []);
 
   return { response, loading, error, remove, clearError };
 };

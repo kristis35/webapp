@@ -416,6 +416,10 @@ const CreateTask = (props) => {
     testCases.splice(index, 1);
     testCases?.forEach((testCase, index) => {
       testCase.inputs?.splice(index, 1);
+      testCase.inputs?.forEach((testCaseInput, testCaseInputIndex) => {
+        testCaseInput.name = methodArguments[testCaseInputIndex].name.value;
+        testCaseInput.type = methodArguments[testCaseInputIndex].type.value;
+      });
     });
 
     setTask({

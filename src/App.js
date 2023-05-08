@@ -9,7 +9,8 @@ import {
   UserInteface,
   Contact,
   EditProfile,
-  CreateTask
+  CreateTask,
+  Tournament
 } from './pages';
 import { DataContext } from './utils';
 
@@ -56,6 +57,10 @@ const App = () => {
               <Route
                 path='ui'
                 element={<UserInteface />}
+              />
+              <Route
+                path='tournaments'
+                element={<Tournament />}
               />
               <Route
                 path='profile'

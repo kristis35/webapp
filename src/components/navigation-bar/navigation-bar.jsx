@@ -134,6 +134,14 @@ const NavigationBar = (props) => {
               />
             </>
           )}
+            <>
+              <OutlinedButton
+                value='Tournaments'
+                color={theme.colors.PurpleBlue}
+                onClick={() => navigate('/tournaments')}
+              />
+            </>
+          
           {token && (
             <>
               <ContainedButton

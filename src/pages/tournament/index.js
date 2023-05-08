@@ -1,0 +1,1 @@
+export { default as Tournament } from './all-tournaments';

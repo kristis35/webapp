@@ -5,3 +5,4 @@ export * from './registration';
 export * from './profile';
 export * from './contact-us';
 export * from './create-task';
+export * from './tournament';

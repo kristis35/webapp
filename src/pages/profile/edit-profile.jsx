@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Form, Input } from '../../components';
+import { Form, TextInput } from '../../components';
 import { useUpdate, DataContext } from '../../utils';
 import profilePhoto from '../../assets/backgrounds/profile-page.png';
 
@@ -156,37 +156,37 @@ const EditProfile = () => {
         onSubmit={handleSubmit}
         loading={loading}
       >
-        <Input
-          type='text'
+        <TextInput
           label='Name'
           name='name'
+          size='lg'
           value={credentials.name?.value}
           onChange={handleChange}
           required
           errorMessage={credentials.name?.errorMessage}
         />
-        <Input
-          type='text'
+        <TextInput
           label='Surname'
           name='surname'
+          size='lg'
           value={credentials.surname?.value}
           onChange={handleChange}
           required
           errorMessage={credentials.surname?.errorMessage}
         />
-        <Input
-          type='text'
+        <TextInput
           label='Email'
           name='email'
+          size='lg'
           value={credentials.email?.value}
           onChange={handleChange}
           required
           errorMessage={credentials.email?.errorMessage}
         />
-        <Input
-          type='text'
+        <TextInput
           label='Phone Number'
           name='phoneNumber'
+          size='lg'
           value={credentials.phoneNumber?.value}
           onChange={handleChange}
           errorMessage={credentials.phoneNumber?.errorMessage}

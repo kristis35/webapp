@@ -10,6 +10,7 @@ import {
   Contact,
   EditProfile,
   CreateTask,
+  SolveTask,
   Tournament
 } from './pages';
 import { DataContext } from './utils';
@@ -67,7 +68,7 @@ const App = () => {
                 element={<Profile />}
               />
               <Route
-                path='contact-us'
+                path='contact_us'
                 element={<Contact />}
               />
               <Route
@@ -78,6 +79,15 @@ const App = () => {
                 path='create_task'
                 element={
                   <CreateTask
+                    snackbarRef={snackbarRef}
+                    setSnackbar={setSnackbar}
+                  />
+                }
+              />
+              <Route
+                path='solve_task/:id'
+                element={
+                  <SolveTask
                     snackbarRef={snackbarRef}
                     setSnackbar={setSnackbar}
                   />

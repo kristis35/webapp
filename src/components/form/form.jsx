@@ -11,6 +11,12 @@ const FormContainer = styled.div`
   padding: 20px;
 `;
 
+const FormFieldsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const ActionButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -20,7 +26,7 @@ const ActionButtonsContainer = styled.div`
 const FormElement = styled.form`
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: ${(props) => props.width || 'auto'};
   background: ${(props) => `${props.theme.colors.Black}E5`};
   border: 3px solid ${(props) => props.theme.colors.BlazeBlue};
   padding: 20px;
@@ -59,10 +65,13 @@ const Form = (props) => {
   const theme = useTheme();
   return (
     <FormContainer>
-      <FormElement onSubmit={onSubmit}>
+      <FormElement
+        onSubmit={onSubmit}
+        width={props.width}
+      >
         <Title>{title}</Title>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        {children}
+        <FormFieldsContainer>{children}</FormFieldsContainer>
         <ActionButtonsContainer>
           {showSubmitButton && (
             <ContainedButton

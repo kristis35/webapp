@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import {
   ContainedButton,
-  Input,
+  TextInput,
   Logo,
   OutlinedButton,
-  Popup
+  Popup,
+  Repeater
 } from '../../components';
 import { useTheme } from 'styled-components';
+import { Select } from '../../components/select';
 
 const clickMe = (text) => {
   alert(text);
@@ -23,6 +25,44 @@ const UserInteface = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toggleIsLoading = () => {
     setIsLoading(!isLoading);
+  };
+
+  const [repeaterItems, setRepeaterItems] = useState([
+    {
+      label: 'One',
+      value: 1
+    },
+    {
+      label: 'OneZero',
+      value: 10
+    },
+    {
+      label: 'Five',
+      value: 5
+    },
+    {
+      label: 'Test',
+      value: '1'
+    },
+    {
+      label: 'Hello',
+      value: 'text'
+    }
+  ]);
+
+  const addItem = () => {
+    const items = [...repeaterItems];
+    items.push({
+      label: 'New',
+      value: 2
+    });
+    setRepeaterItems(items);
+  };
+
+  const removeItem = (index) => {
+    const items = [...repeaterItems];
+    items.splice(index, 1);
+    setRepeaterItems(items);
   };
 
   return (
@@ -57,30 +97,78 @@ const UserInteface = () => {
         />
       </div>
       <div>
-        <Input
-          label='Small Input'
+        <TextInput
+          label='Small Text Input'
           labelColor={theme.colors.Black}
-          type='text'
           size='sm'
           placeholder='Placeholder'
           errorMessage='This is an error'
         />
-        <Input
-          label='Medium Input'
+        <TextInput
+          label='Medium Text Input'
           labelColor={theme.colors.Black}
-          type='text'
           size='md'
           placeholder='Placeholder'
           required
         />
-        <Input
-          label='Large Input'
+        <TextInput
+          label='Large Text Input'
           labelColor={theme.colors.Black}
-          type='text'
           size='lg'
           placeholder='Placeholder'
           errorMessage='This is an error'
         />
+        <Select
+          label='Select'
+          labelColor={theme.colors.Black}
+          size='md'
+          placeholder='Placeholder'
+          errorMessage='This is an error'
+          defaultOptionValue={15}
+          options={[
+            {
+              text: 'One',
+              value: 1
+            },
+            {
+              text: 'OneZero',
+              value: 10
+            },
+            {
+              text: 'Five',
+              value: 5
+            },
+            {
+              text: 'Test',
+              value: '1'
+            },
+            {
+              text: 'Hello',
+              value: 'text'
+            }
+          ]}
+        />
+        <Repeater
+          label='Repeater'
+          labelColor={theme.colors.Black}
+          items={repeaterItems}
+          onAdd={addItem}
+          onRemove={removeItem}
+        >
+          {repeaterItems?.map((item, index) => {
+            return (
+              <TextInput
+                key={index}
+                label={item.label}
+                labelColor={theme.colors.Black}
+                size='md'
+                value={item.value}
+                placeholder='Placeholder'
+                required
+              />
+            );
+          })}
+        </Repeater>
       </div>
       <div>
         <OutlinedButton

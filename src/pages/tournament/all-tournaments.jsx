@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import TournamentCard from './tournament';
 import { DataContext, useFind } from '../../utils';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const TournamentGrid = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ const Tournament = () => {
   const dataContext = useContext(DataContext);
   const [tournament, setTournament] = useState(null);
   const { response, find } = useFind(`${dataContext.API}/tournament/get/all`);
+  const navigate = useNavigate();
 
   useEffect(() => {
     find();
@@ -27,7 +29,6 @@ const Tournament = () => {
     }
   }, [response]);
 
-  console.log(tournament);
 
   return (
     <TournamentGrid>
@@ -41,8 +42,9 @@ const Tournament = () => {
             status={t.status}
             creatorUser = {t.creatorUser.username}
             onButtonClick={() => {
-              // handleButtonClick logic
+              navigate(`/tournament/${t.id}`, { state: { tournament: t } });
             }}
+            
           />
         ))}
       

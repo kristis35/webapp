@@ -11,6 +11,7 @@ import {
   EditProfile,
   CreateTask,
   SolveTask,
+  TournamentM,
   Tournament
 } from './pages';
 import { DataContext } from './utils';
@@ -58,6 +59,10 @@ const App = () => {
               <Route
                 path='ui'
                 element={<UserInteface />}
+              />
+              <Route
+                path='tournament/:id'
+                element={<TournamentM />}
               />
               <Route
                 path='tournaments'

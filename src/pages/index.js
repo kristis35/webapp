@@ -7,3 +7,4 @@ export * from './contact-us';
 export * from './create-task';
 export * from './solve-task';
 export * from './tournament';
+export * from './tournament-page';

@@ -142,13 +142,6 @@ const NavigationBar = (props) => {
           
           {token && (
             <>
-              {!location.pathname.includes('/solve_task') && (
-                <ContainedButton
-                  value='Solve task'
-                  color={theme.colors.PurpleBlue}
-                  onClick={() => navigate('/solve_task/1')}
-                />
-              )}
               {location.pathname !== '/create_task' && (
                 <ContainedButton
                   value='Create task'

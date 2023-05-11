@@ -91,8 +91,6 @@ const TournamentCard = (props) => {
           <TournamentCardText> <TournamentTitleOfText>Start date:</TournamentTitleOfText>{startDate}</TournamentCardText>
           <TournamentCardText><TournamentTitleOfText>End date: </TournamentTitleOfText>{endDate}</TournamentCardText>
           <TournamentCardText> <TournamentTitleOfText>Difficulty: </TournamentTitleOfText>{difficulty}</TournamentCardText>
-        </TournamentCardInfo>
-        <TournamentCardInfo>
           <TournamentCardText> <TournamentTitleOfText>Organizer: </TournamentTitleOfText> {creatorUser}</TournamentCardText>
           <TournamentCardText> <TournamentTitleOfText>Status:</TournamentTitleOfText>{status}</TournamentCardText>
         </TournamentCardInfo>

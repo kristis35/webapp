@@ -126,7 +126,7 @@ const NavigationBar = (props) => {
       message: 'See you soon!'
     });
     props.snackbarRef.current.show();
-
+    setSideBarIsOpen(false);
     navigate('/');
   };
 

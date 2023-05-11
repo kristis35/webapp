@@ -27,11 +27,10 @@ const Tournament = () => {
     }
   }, [response]);
 
-  console.log(tournament);
-
   return (
     <TournamentGrid>
-        {tournament && tournament.map((t, index) => (
+      {tournament &&
+        tournament.map((t, index) => (
           <TournamentCard
             key={index}
             name={t.name}
@@ -39,13 +38,12 @@ const Tournament = () => {
             endDate={t.endDate}
             difficulty={t.difficulty}
             status={t.status}
-            creatorUser = {t.creatorUser.username}
+            creatorUser={t.creatorUser.username}
             onButtonClick={() => {
               // handleButtonClick logic
             }}
           />
         ))}
-      
     </TournamentGrid>
   );
 };

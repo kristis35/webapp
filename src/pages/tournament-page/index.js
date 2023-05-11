@@ -1,1 +1,1 @@
-export { default as TournamentM } from './tournaments-main';
+export { default as TournamentMain } from './tournaments-main';

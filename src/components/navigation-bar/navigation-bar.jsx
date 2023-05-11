@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import {
-  ContainedButton,
-  IconButton,
-  Logo,
-  MenuIcon,
-  OutlinedButton
-} from '..';
+import { ContainedButton, IconButton, MenuIcon, OutlinedButton } from '..';
 import { useTheme } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -37,7 +31,7 @@ const TopBar = styled.div`
 const SideBar = styled.div`
   position: fixed;
   top: 52px;
-  height: calc(100% - 52px);
+  height: calc(100% - 54px);
   width: 300px;
 
   background-color: ${(props) => props.theme.colors.Black};
@@ -59,13 +53,17 @@ const SideBar = styled.div`
 
   transition: all 0.25s ease-out;
   transform: translateX(${(props) => `${props.isOpen ? 0 : -300}px`});
+  z-index: 2;
 `;
 
 const MenuButtonContainer = styled.div`
   width='300px'
-`;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
 
-const LogoContainer = styled.div``;
+`;
 
 const NavigationButtonsContainer = styled.div`
   margin-top: auto;
@@ -104,12 +102,6 @@ const NavigationBar = (props) => {
             <MenuIcon />
           </IconButton>
         </MenuButtonContainer>
-        <LogoContainer>
-          <Logo
-            height='52px'
-            width='104px'
-          />
-        </LogoContainer>
         <NavigationButtonsContainer>
           {!token && location.pathname === '/' && (
             <>
@@ -132,21 +124,20 @@ const NavigationBar = (props) => {
               onClick={() => navigate('/')}
             />
           )}
-            <>
-              <OutlinedButton
-                value='Tournaments'
-                color={theme.colors.PurpleBlue}
-                onClick={() => navigate('/tournaments')}
-              />
-            </>
-          
           {token && (
             <>
-              {location.pathname !== '/create_task' && (
-                <ContainedButton
-                  value='Create task'
+              {!location.pathname.includes('/tournaments') && (
+                <OutlinedButton
+                  value='Tournaments'
                   color={theme.colors.PurpleBlue}
-                  onClick={() => navigate('/create_task')}
+                  onClick={() => navigate('/tournaments')}
+                />
+              )}
+              {!location.pathname.includes('/tasks') && (
+                <OutlinedButton
+                  value='Tasks'
+                  color={theme.colors.PurpleBlue}
+                  onClick={() => navigate('/tasks')}
                 />
               )}
               <ContainedButton

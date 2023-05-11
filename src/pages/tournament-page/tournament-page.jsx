@@ -1,18 +1,18 @@
 import styled from 'styled-components';
 import React, { useEffect, useCallback, useContext } from 'react';
-import { DataContext, useSave,useFind } from '../../utils';
-import { useParams,useNavigate } from 'react-router-dom';
+import { DataContext, useSave, useFind } from '../../utils';
+import { useParams, useNavigate } from 'react-router-dom';
 const CardContainer = styled.div`
   width: 600px;
   background: ${(props) => `${props.theme.colors.Black}E5`};
   border: 3px solid ${(props) => props.theme.colors.BlazeBlue};
   border-radius: 10px;
   padding: 20px;
-  margin: 0 auto; 
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute; 
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -64,55 +64,29 @@ const Difficulty = styled.p`
   margin-bottom: 5px;
 `;
 
-// const Task = styled.div`
-//   border: 1px solid #ddd;
-//   border-radius: 5px;
-//   padding: 10px;
-//   margin-bottom: 10px;
-//   width: 100%;
-//   position: relative;
-// `;
-
-// const TaskTitle = styled.h3`
-//   font-size: 20px;
-//   font-family: ${(props) => props.theme.fonts.Default};
-//   color: ${(props) => props.theme.colors.White};
-//   margin-bottom: 5px;
-// `;
-
-// const TaskDescription = styled.p`
-//   font-size: 16px;
-//   font-family: ${(props) => props.theme.fonts.Default};
-//   color: ${(props) => props.theme.colors.White};
-//   margin-bottom: 5px;
-// `;
-
-// const TaskPoints = styled.p`
-//   font-size: 16px;
-//   font-family: ${(props) => props.theme.fonts.Default};
-//   color: ${(props) => props.theme.colors.White};
-//   margin-bottom: 5px;
-// `;
-
-// const TaskLanguage = styled.p`
-//   font-size: 16px;
-//   font-family: ${(props) => props.theme.fonts.Default};
-//   color: ${(props) => props.theme.colors.White};
-//   margin-bottom: 5px;
-// `;
 const Button = styled.button`
-padding: 10px 15px;
-border: none;
-border-radius: 5px;
-background-color: ${(props) => props.theme.colors.PurpleBlue};
-color: ${(props) => props.theme.colors.White};
-font-family: ${(props) => props.theme.fonts.Default};
-cursor: pointer;
-font-size: 16px;
-margin-top: 20px; 
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.colors.PurpleBlue};
+  color: ${(props) => props.theme.colors.White};
+  font-family: ${(props) => props.theme.fonts.Default};
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
 `;
 
-const TournamentCard = ({ name, startDate, endDate, description, firstPlacePoints, secondPlacePoints, thirdPlacePoints, difficulty, status }) => {
+const TournamentCard = ({
+  name,
+  startDate,
+  endDate,
+  description,
+  firstPlacePoints,
+  secondPlacePoints,
+  thirdPlacePoints,
+  difficulty,
+  status
+}) => {
   const { id } = useParams();
   const dataContext = useContext(DataContext);
   const token = localStorage.getItem('token');
@@ -123,15 +97,11 @@ const TournamentCard = ({ name, startDate, endDate, description, firstPlacePoint
     find: checkRegistration
   } = useFind(`${dataContext.API}/tournament/isRegistered/${id}`);
 
-
-
   const {
-    response :registerResponse,
+    response: registerResponse,
     error: registerError,
     save: register
   } = useSave(`${dataContext.API}/tournament/register/{id}`);
-
-  
 
   useEffect(() => {
     if (registerError) {
@@ -140,21 +110,22 @@ const TournamentCard = ({ name, startDate, endDate, description, firstPlacePoint
     if (registeredError) {
       console.error(registeredError);
     }
-
-  }
-    , [registerError]);
+  }, [registerError]);
 
   useEffect(() => {
-    checkRegistration({
-      headers: {
-        Authorization: token
-      }
-    }, [
+    checkRegistration(
       {
-        name: 'id',
-        value: id
-      }
-    ]);
+        headers: {
+          Authorization: token
+        }
+      },
+      [
+        {
+          name: 'id',
+          value: id
+        }
+      ]
+    );
   }, [checkRegistration, token, id]);
 
   const handleRegister = useCallback(() => {
@@ -170,7 +141,7 @@ const TournamentCard = ({ name, startDate, endDate, description, firstPlacePoint
           value: id
         }
       ];
-      register({}, config, additionalURLParams)
+      register({}, config, additionalURLParams);
     }
   }, [register, token]);
 
@@ -182,7 +153,7 @@ const TournamentCard = ({ name, startDate, endDate, description, firstPlacePoint
 
   const handleSolveTask = () => {
     navigate(`/solve_task/${id}`);
-  }
+  };
 
   return (
     <CardContainer>
@@ -200,10 +171,14 @@ const TournamentCard = ({ name, startDate, endDate, description, firstPlacePoint
         </Subsection>
       </Section>
       <Description>{description}</Description>
-      {status === "Registration" && !registeredResponse?.data && <Button onClick={handleRegister}>Register</Button>}
-      {status === "Started" && registeredResponse?.data && <Button onClick={handleSolveTask}>Solve Task</Button>}
+      {status === 'Registration' && !registeredResponse?.data && (
+        <Button onClick={handleRegister}>Register</Button>
+      )}
+      {status === 'Started' && registeredResponse?.data && (
+        <Button onClick={handleSolveTask}>Solve Task</Button>
+      )}
     </CardContainer>
   );
-}
+};
 
 export default TournamentCard;

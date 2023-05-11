@@ -1,4 +1,3 @@
-
 import TournamentCard from './tournament-page';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
@@ -15,15 +14,14 @@ const AppContainer = styled.div`
   min-height: 100vh;
 `;
 
-const TournamentM = () => {
+const TournamentMain = () => {
   const location = useLocation();
   const { tournament } = location.state;
-  console.log(tournament);
   return (
     <AppContainer>
       {tournament && <TournamentCard {...tournament} />}
     </AppContainer>
   );
-}
+};
 
-export default TournamentM;
+export default TournamentMain;

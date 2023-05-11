@@ -9,10 +9,11 @@ import {
   UserInteface,
   Contact,
   EditProfile,
-  CreateTask,
-  SolveTask,
-  TournamentM,
-  Tournament
+  Tournament,
+  TournamentMain,
+  TaskList,
+  TaskForm,
+  SolveTask
 } from './pages';
 import { DataContext } from './utils';
 
@@ -62,7 +63,7 @@ const App = () => {
               />
               <Route
                 path='tournament/:id'
-                element={<TournamentM />}
+                element={<TournamentMain />}
               />
               <Route
                 path='tournaments'
@@ -81,9 +82,13 @@ const App = () => {
                 element={<EditProfile />}
               />
               <Route
-                path='create_task'
+                path='tasks'
+                element={<TaskList />}
+              />
+              <Route
+                path='tasks/:id'
                 element={
-                  <CreateTask
+                  <TaskForm
                     snackbarRef={snackbarRef}
                     setSnackbar={setSnackbar}
                   />

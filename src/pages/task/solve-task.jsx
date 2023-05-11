@@ -73,7 +73,7 @@ const SolveTask = () => {
     loading: getcodeloading,
     find: getCode
   } = useFind(`${dataContext.API}/task/getCode/{id}`);
-  
+
   const {
     response: getTaskResponse,
     loading: getTaskloading,
@@ -87,11 +87,9 @@ const SolveTask = () => {
     save
   } = useSave(`${dataContext.API}/task/submitSolution/{id}`);
 
-  const {
-    response: saveTournamentResponse,
-    save: saveTournament
-  } = useSave(`${dataContext.API}/tournament/finish/${id}`);
-  
+  const { response: saveTournamentResponse, save: saveTournament } = useSave(
+    `${dataContext.API}/tournament/finish/${id}`
+  );
 
   useEffect(() => {
     if (isfinished) {
@@ -104,7 +102,6 @@ const SolveTask = () => {
     }
   }, [isfinished]);
 
-
   useEffect(() => {
     if (id) {
       const config = {
@@ -115,7 +112,7 @@ const SolveTask = () => {
       nextTournamentTask(config);
     }
   }, [token, id]);
-  
+
   useEffect(() => {
     if (task.id) {
       const config = {
@@ -151,7 +148,6 @@ const SolveTask = () => {
   }, [getTaskResponse]);
 
   useEffect(() => {
-    console.log(getTaskError);
     if (getTaskError?.response?.status === 404) {
       setFinished(true);
     }

@@ -11,6 +11,7 @@ import {
 } from '../../components';
 import { DataContext, useFind, useSave, useUpdate } from '../../utils';
 import { useNavigate, useParams } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 const Container = styled.div`
   height: calc(100% - ${(props) => props.topBar?.offsetHeight || 0}px);
@@ -130,6 +131,15 @@ const TaskForm = (props) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  let role = null;
+  if (token) {
+    role = jwtDecode(token).authorities;
+  }
+
+  if (role && role === dataContext.ROLES.USER) {
+    navigate('/');
+  }
+
   const { id } = useParams();
 
   const [task, setTask] = useState(DefaultTask);
@@ -290,7 +300,7 @@ const TaskForm = (props) => {
   }, [saveResponse]);
 
   useEffect(() => {
-    if (updateResponse?.status === 201) {
+    if (updateResponse?.status === 200) {
       props.setSnackbar({
         color: theme.colors.DarkGreen,
         message: 'Task updated'

@@ -4,16 +4,10 @@ import { useTheme } from 'styled-components';
 import { ContainedButton, Form } from '../../components';
 import { useNavigate } from 'react-router-dom';
 import { DataContext, useFind } from '../../utils';
-import profilePhoto from '../../assets/backgrounds/profile-page.png';
 
 const Container = styled.div`
   height: calc(100% - ${(props) => props.topBar?.offsetHeight || 0}px);
-  background-image: url(${profilePhoto});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  overflow: auto;
+  background-color: ${(props) => props.theme.colors.StrongGray};
 `;
 
 const Userprofile = styled.div`
@@ -25,12 +19,12 @@ const Userprofile = styled.div`
 `;
 
 const Userinfo = styled.div`
-font-size: 1.2rem;
-line-height: 1.5;
-font-color: white;
-margin-left: 1px;
-display: flex;
-flex-wrap: wrap;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  font-color: white;
+  margin-left: 1px;
+  display: flex;
+  flex-wrap: wrap;
 `;
 const UserInfoColumn = styled.div`
   flex: 1;
@@ -131,7 +125,6 @@ const TournamentGrid = styled.div`
   max-width: 1000px; // Adjust this value to fit two cards in a row
 `;
 
-
 const TournamentCardText = styled.p`
   margin: 10px 0;
   font-size: 16px;
@@ -142,14 +135,15 @@ const TournamentTitleOfText = styled.div`
   font-weight: bold;
 `;
 
-
 function userprofile({ user }) {
   const topBar = document.getElementById('topBar');
   const theme = useTheme();
   const navigate = useNavigate();
   const dataContext = useContext(DataContext);
   const [tournament, setTournament] = useState(null);
-  const { response, find } = useFind(`${dataContext.API}/tournament/get/history`);
+  const { response, find } = useFind(
+    `${dataContext.API}/tournament/get/history`
+  );
   const token = localStorage.getItem('token');
   useEffect(() => {
     find({
@@ -165,17 +159,9 @@ function userprofile({ user }) {
   }, [response]);
   // TournamentCard component
   const TournamentCard = (props) => {
-    const {
-      name,
-      startDate,
-      endDate,
-      difficulty,
-      status,
-      creatorUser
-    } = props;
+    const { name, startDate, endDate, difficulty, status, creatorUser } = props;
 
     return (
-      
       <TournamentCardWrapper>
         <TournamentCardTitle>{name}</TournamentCardTitle>
         <TournamentCardInfo>
@@ -214,7 +200,7 @@ function userprofile({ user }) {
           <CircleText>{user?.level}</CircleText>
         </Circle>
         <Points>Points: {user?.points}</Points>
-        {user?.role === "ROLE_SPONSOR" ? (
+        {user?.role === 'ROLE_SPONSOR' ? (
           <Sponsor>Sponsor</Sponsor>
         ) : (
           <Sponsor>Programmer</Sponsor>
@@ -239,20 +225,21 @@ function userprofile({ user }) {
       </Form>
       <TournamentGrid>
         <TournamentCardTitle>Turnyrų istorija</TournamentCardTitle>
-        {tournament && tournament.map((t, index) => (
-          <TournamentCard
-            key={index}
-            name={t.name}
-            startDate={t.startDate}
-            endDate={t.endDate}
-            difficulty={t.difficulty}
-            status={t.status}
-            creatorUser={t.creatorUser.username}
-            onButtonClick={() => {
-              // handleButtonClick logic
-            }}
-          />
-        ))}
+        {tournament &&
+          tournament.map((t, index) => (
+            <TournamentCard
+              key={index}
+              name={t.name}
+              startDate={t.startDate}
+              endDate={t.endDate}
+              difficulty={t.difficulty}
+              status={t.status}
+              creatorUser={t.creatorUser.username}
+              onButtonClick={() => {
+                // handleButtonClick logic
+              }}
+            />
+          ))}
       </TournamentGrid>
     </Container>
   );

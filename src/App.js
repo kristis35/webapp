@@ -9,17 +9,27 @@ import {
   UserInteface,
   Contact,
   EditProfile,
-  Tournament,
-  TournamentMain,
   TaskList,
   TaskForm,
-  SolveTask
+  SolveTask,
+  TournamentList,
+  Tournament
 } from './pages';
 import { DataContext } from './utils';
 
 const App = () => {
   const dataContext = {
-    API: 'http://localhost:8080'
+    API: 'http://localhost:8080',
+    ROLES: {
+      ADMIN: 'ROLE_ADMIN',
+      USER: 'ROLE_USER',
+      SPONSOR: 'ROLE_SPONSOR'
+    },
+    TOURNAMENT_STATUS: {
+      REGISTRATION: 'Registration',
+      STARTED: 'Started',
+      ENDED: 'Ended'
+    }
   };
 
   const snackbarRef = useRef(null);
@@ -63,11 +73,16 @@ const App = () => {
               />
               <Route
                 path='tournament/:id'
-                element={<TournamentMain />}
+                element={
+                  <Tournament
+                    snackbarRef={snackbarRef}
+                    setSnackbar={setSnackbar}
+                  />
+                }
               />
               <Route
                 path='tournaments'
-                element={<Tournament />}
+                element={<TournamentList />}
               />
               <Route
                 path='profile'

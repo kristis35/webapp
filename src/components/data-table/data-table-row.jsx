@@ -14,14 +14,22 @@ const TableRow = styled.tr`
         transform: translateY(-1px);
       }
     `}
+
+  ${(props) =>
+    props.clickable &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 const DataTableRow = (props) => {
-  const { borderSize, hovarable = true } = props;
+  const { borderSize, hovarable = true, clickable = false, onClick } = props;
   return (
     <TableRow
       borderSize={borderSize}
       hovarable={hovarable}
+      clickable={clickable}
+      onClick={onClick}
     >
       {props.children}
     </TableRow>

@@ -5,6 +5,7 @@ const Toolbar = styled.div`
   display: flex;
   justify-content: ${(props) => props.align || 'space-between'};
   width: 100%;
+  margin-bottom: 8px;
 `;
 
 const DataTableToolbar = (props) => {

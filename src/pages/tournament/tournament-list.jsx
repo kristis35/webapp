@@ -38,23 +38,19 @@ const ActionButtonsContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const TaskList = () => {
+const TournamentList = () => {
   const topBar = document.getElementById('topBar');
-  const dataContext = useContext(DataContext);
   const token = localStorage.getItem('token');
   let role = null;
   if (token) {
     role = jwtDecode(token).authorities;
   }
+  const dataContext = useContext(DataContext);
   const theme = useTheme();
   const navigate = useNavigate();
 
-  if (role && role === dataContext.ROLES.USER) {
-    navigate('/');
-  }
-
-  const [tasks, setTasks] = useState(null);
-  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [tournaments, setTournaments] = useState(null);
+  const [tournamentToDelete, setTournamentsToDelete] = useState(null);
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
   const toggleDeletePopup = () => {
@@ -65,13 +61,13 @@ const TaskList = () => {
     response: findResponse,
     loading: findLoading,
     find
-  } = useFind(`${dataContext.API}/task/getAll`);
+  } = useFind(`${dataContext.API}/tournament/get/all`);
 
   const {
     response: removeResponse,
     loading: removeLoading,
     remove
-  } = useRemove(`${dataContext.API}/task/delete/{id}`);
+  } = useRemove(`${dataContext.API}/tournament/delete/{id}`);
 
   useEffect(() => {
     find({
@@ -83,20 +79,22 @@ const TaskList = () => {
 
   useEffect(() => {
     if (findResponse?.data) {
-      setTasks(findResponse.data);
+      setTournaments(findResponse.data);
     }
   }, [findResponse]);
 
   useEffect(() => {
     if (removeResponse?.status === 200) {
       toggleDeletePopup();
-      setTaskToDelete(null);
-      setTasks(tasks.filter((task) => task.id !== taskToDelete));
+      setTournamentsToDelete(null);
+      setTournaments(
+        tournaments.filter((tournament) => tournament.id !== tournamentToDelete)
+      );
     }
   }, [removeResponse]);
 
   const handleDelete = () => {
-    if (taskToDelete) {
+    if (tournamentToDelete) {
       const config = {
         headers: {
           Authorization: token
@@ -105,7 +103,7 @@ const TaskList = () => {
       const additionalURLParams = [
         {
           name: 'id',
-          value: taskToDelete
+          value: tournamentToDelete
         }
       ];
       remove(config, additionalURLParams);
@@ -113,38 +111,58 @@ const TaskList = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/tasks/${id}`);
+    navigate(`/tournaments/${id}`);
   };
 
   const renderRows = () => {
-    return tasks?.map((task) => (
-      <DataTableRow key={task.id}>
-        <DataTableItem>{task.title}</DataTableItem>
-        <DataTableItem>{task.points}</DataTableItem>
-        <DataTableItem>{task.language}</DataTableItem>
-        <DataTableItem>{!task.mutable ? 'Yes' : 'No'}</DataTableItem>
+    return tournaments?.map((tournament) => (
+      <DataTableRow
+        key={tournament.id}
+        clickable={true}
+        onClick={() => navigate(`/tournament/${tournament.id}`)}
+      >
+        <DataTableItem>{tournament.name}</DataTableItem>
+        <DataTableItem>{tournament.startDate}</DataTableItem>
+        <DataTableItem>{tournament.endDate}</DataTableItem>
+        <DataTableItem>{tournament.difficulty}</DataTableItem>
+        <DataTableItem>{tournament.creatorUser?.username}</DataTableItem>
+        <DataTableItem>{tournament.status}</DataTableItem>
+        {role && role === dataContext.ROLES.USER && (
+          <DataTableItem>{tournament.registered ? 'Yes' : 'No'}</DataTableItem>
+        )}
         <DataTableItem align='right'>
-          <ActionButtonsContainer>
-            <IconButton
-              disabled={!task.mutable}
-              onClick={() => handleEdit(task.id)}
-            >
-              <EditIcon color={!task.mutable && theme.colors.StrongGray} />
-            </IconButton>
-            <IconButton
-              onClick={() => {
-                setTaskToDelete(task.id);
-                toggleDeletePopup();
-              }}
-              disabled={!task.mutable || removeLoading}
-            >
-              <DeleteIcon
-                color={
-                  (!task.mutable || removeLoading) && theme.colors.StrongGray
+          {role && role !== dataContext.ROLES.USER && (
+            <ActionButtonsContainer>
+              <IconButton
+                disabled={
+                  tournament.status !==
+                  dataContext.TOURNAMENT_STATUS.REGISTRATION
                 }
-              />
-            </IconButton>
-          </ActionButtonsContainer>
+                onClick={() => handleEdit(tournament.id)}
+              >
+                <EditIcon
+                  color={!tournament.mutable && theme.colors.StrongGray}
+                />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  setTournamentsToDelete(tournament.id);
+                  toggleDeletePopup();
+                }}
+                disabled={
+                  tournament.status !==
+                    dataContext.TOURNAMENT_STATUS.REGISTRATION || removeLoading
+                }
+              >
+                <DeleteIcon
+                  color={
+                    (!tournament.mutable || removeLoading) &&
+                    theme.colors.StrongGray
+                  }
+                />
+              </IconButton>
+            </ActionButtonsContainer>
+          )}
         </DataTableItem>
       </DataTableRow>
     ));
@@ -154,15 +172,17 @@ const TaskList = () => {
     <Container topBar={topBar}>
       <DataTableContainer>
         <DataTableToolbar>
-          <OutlinedButton
-            value='Create task'
-            color={theme.colors.BlazeBlue}
-            onClick={() => navigate('/tasks/new')}
-          />
+          {role && role !== dataContext.ROLES.USER && (
+            <OutlinedButton
+              value='Create tournament'
+              color={theme.colors.BlazeBlue}
+              onClick={() => navigate('/tournaments/new')}
+            />
+          )}
         </DataTableToolbar>
         <DataTable
           loading={findLoading}
-          noDataVisible={!tasks || tasks?.length === 0}
+          noDataVisible={!tournaments || tournaments?.length === 0}
         >
           <DataTableHeader>
             <DataTableRow
@@ -170,9 +190,14 @@ const TaskList = () => {
               hovarable={false}
             >
               <DataTableItem>Title</DataTableItem>
-              <DataTableItem>Points</DataTableItem>
-              <DataTableItem>Language</DataTableItem>
-              <DataTableItem>Used in a tournament</DataTableItem>
+              <DataTableItem>Start date</DataTableItem>
+              <DataTableItem>End date</DataTableItem>
+              <DataTableItem>Difficulty</DataTableItem>
+              <DataTableItem>Organizer</DataTableItem>
+              <DataTableItem>Status</DataTableItem>
+              {role && role === dataContext.ROLES.USER && (
+                <DataTableItem>Registered</DataTableItem>
+              )}
               <DataTableItem
                 width='100px'
                 align='right'
@@ -181,12 +206,12 @@ const TaskList = () => {
           </DataTableHeader>
           <DataTableBody>{renderRows()}</DataTableBody>
         </DataTable>
-        <Text>{Pluralize(tasks?.length || 0, 'item')}</Text>
+        <Text>{Pluralize(tournaments?.length || 0, 'item')}</Text>
       </DataTableContainer>
       {deletePopupOpen && (
         <Popup
           title='Confirm'
-          message={`You are about to delete a task. Do you wish to continue?`}
+          message={`You are about to delete a tournaments. Do you wish to continue?`}
           closeButtonColor={theme.colors.BlazeBlue}
           onClose={toggleDeletePopup}
           buttons={[
@@ -203,4 +228,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default TournamentList;

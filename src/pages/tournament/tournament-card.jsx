@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import React, { useEffect, useCallback, useContext } from 'react';
-import { DataContext, useSave, useFind } from '../../utils';
+import { DataContext, useSave } from '../../utils';
 import { useParams, useNavigate } from 'react-router-dom';
 const CardContainer = styled.div`
   width: 600px;
@@ -76,57 +76,17 @@ const Button = styled.button`
   margin-top: 20px;
 `;
 
-const TournamentCard = ({
-  name,
-  startDate,
-  endDate,
-  description,
-  firstPlacePoints,
-  secondPlacePoints,
-  thirdPlacePoints,
-  difficulty,
-  status
-}) => {
+const TournamentCard = (props) => {
+  const { tournament, loading } = props;
   const { id } = useParams();
   const dataContext = useContext(DataContext);
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  const {
-    response: registeredResponse,
-    error: registeredError,
-    find: checkRegistration
-  } = useFind(`${dataContext.API}/tournament/isRegistered/${id}`);
+  const theme = useTheme();
 
-  const {
-    response: registerResponse,
-    error: registerError,
-    save: register
-  } = useSave(`${dataContext.API}/tournament/register/{id}`);
-
-  useEffect(() => {
-    if (registerError) {
-      console.error(registerError);
-    }
-    if (registeredError) {
-      console.error(registeredError);
-    }
-  }, [registerError]);
-
-  useEffect(() => {
-    checkRegistration(
-      {
-        headers: {
-          Authorization: token
-        }
-      },
-      [
-        {
-          name: 'id',
-          value: id
-        }
-      ]
-    );
-  }, [checkRegistration, token, id]);
+  const { response: registerResponse, save: register } = useSave(
+    `${dataContext.API}/tournament/register/{id}`
+  );
 
   const handleRegister = useCallback(() => {
     if (id) {
@@ -147,7 +107,12 @@ const TournamentCard = ({
 
   useEffect(() => {
     if (registerResponse?.status === 200) {
-      navigate(0);
+      props.getTournament();
+      props.setSnackbar({
+        color: theme.colors.DarkGreen,
+        message: 'Registered successfuly!'
+      });
+      props.snackbarRef.current.show();
     }
   }, [registerResponse]);
 
@@ -157,25 +122,39 @@ const TournamentCard = ({
 
   return (
     <CardContainer>
-      <Title>{name}</Title>
-      <Section>
-        <Subsection>
-          <Date>Start Date: {startDate}</Date>
-          <Date>End Date: {endDate}</Date>
-          <Difficulty>Difficulty: {difficulty}</Difficulty>
-        </Subsection>
-        <Subsection>
-          <Points>First Place: {firstPlacePoints} points</Points>
-          <Points>Second Place: {secondPlacePoints} points</Points>
-          <Points>Third Place: {thirdPlacePoints} points</Points>
-        </Subsection>
-      </Section>
-      <Description>{description}</Description>
-      {status === 'Registration' && !registeredResponse?.data && (
-        <Button onClick={handleRegister}>Register</Button>
-      )}
-      {status === 'Started' && registeredResponse?.data && (
-        <Button onClick={handleSolveTask}>Solve Task</Button>
+      {loading ? (
+        <Title>Loading...</Title>
+      ) : (
+        <>
+          <Title>{tournament?.name}</Title>
+          <Section>
+            <Subsection>
+              <Date>Start Date: {tournament?.startDate}</Date>
+              <Date>End Date: {tournament?.endDate}</Date>
+              <Difficulty>Difficulty: {tournament?.difficulty}</Difficulty>
+            </Subsection>
+            <Subsection>
+              <Points>
+                First Place: {tournament?.firstPlacePoints} points
+              </Points>
+              <Points>
+                Second Place: {tournament?.secondPlacePoints} points
+              </Points>
+              <Points>
+                Third Place: {tournament?.thirdPlacePoints} points
+              </Points>
+            </Subsection>
+          </Section>
+          <Description>{tournament?.description}</Description>
+          {tournament?.status === dataContext.TOURNAMENT_STATUS.REGISTRATION &&
+            !tournament?.registered && (
+              <Button onClick={handleRegister}>Register</Button>
+            )}
+          {tournament?.status === dataContext.TOURNAMENT_STATUS.STARTED &&
+            tournament?.registered && (
+              <Button onClick={handleSolveTask}>Solve Task</Button>
+            )}
+        </>
       )}
     </CardContainer>
   );

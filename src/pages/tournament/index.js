@@ -1,1 +1,2 @@
-export { default as Tournament } from './all-tournaments';
+export { default as TournamentList } from './tournament-list';
+export { default as Tournament } from './tournament';

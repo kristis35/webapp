@@ -98,7 +98,7 @@ const SolveTask = () => {
           Authorization: token
         }
       };
-      saveTournament(config);
+      saveTournament({}, config);
     }
   }, [isfinished]);
 

@@ -19,6 +19,7 @@ const Container = styled.div`
 const Userprofile = styled.div`
   display: flex;
   align-items: center;
+  width: 500px;
   font-family: ${(props) => props.theme.fonts.Default};
   color: ${(props) => props.theme.colors.White};
 `;
@@ -38,7 +39,7 @@ const UserInfoColumn = styled.div`
 const Points = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: right;
   background-color: ${(props) => props.theme.colors.React};
   color: ${(props) => props.theme.colors.White};
   font-family: ${(props) => props.theme.fonts.Default};
@@ -52,11 +53,10 @@ const Points = styled.div`
 
 const Circle = styled.div`
   height: 50px;
-  width: 200px;
+  width: 100%;
   float: left;
   display: flex;
   border-radius: 40px;
-  background: ${(props) => `${props.theme.colors.Default}E5`};
   border: 3px solid ${(props) => props.theme.colors.BlazeBlue};
   font-family: ${(props) => props.theme.fonts.Default};
   color: ${(props) => props.theme.colors.White};
@@ -68,21 +68,22 @@ const CircleText = styled.div`
   font-weight: bold;
   padding-top: 10px;
   font-family: ${(props) => props.theme.fonts.Default};
-  color: ${(props) => props.theme.colors.Black};
+  color: ${(props) => props.theme.colors.White};
   margin-left: 50px;
 `;
 
 const Sponsor = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   justify-content: center;
-  background-color: ${(props) => props.theme.colors.PurpleBlue};
+  border: 3px solid ${(props) => props.theme.colors.BlazeBlue};
   color: ${(props) => props.theme.colors.White};
   font-family: ${(props) => props.theme.fonts.Default};
   font-size: 1.2rem;
   padding: 10px;
   margin-top: 20px;
-  border-radius: 10px;
+  border-radius: 40px;
 `;
 
 const TournamentCardWrapper = styled.div`
@@ -157,7 +158,6 @@ function userprofile({ user }) {
       }
     });
   }, []);
-
   useEffect(() => {
     if (response?.data) {
       setTournament(response.data);
@@ -191,8 +191,6 @@ function userprofile({ user }) {
             <TournamentTitleOfText>Difficulty: </TournamentTitleOfText>
             {difficulty}
           </TournamentCardText>
-        </TournamentCardInfo>
-        <TournamentCardInfo>
           <TournamentCardText>
             <TournamentTitleOfText>Organizer: </TournamentTitleOfText>
             {creatorUser}
@@ -216,7 +214,7 @@ function userprofile({ user }) {
           <CircleText>{user?.level}</CircleText>
         </Circle>
         <Points>Points: {user?.points}</Points>
-        {user?.role === 0 ? (
+        {user?.role === "ROLE_SPONSOR" ? (
           <Sponsor>Sponsor</Sponsor>
         ) : (
           <Sponsor>Programmer</Sponsor>

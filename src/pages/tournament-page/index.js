@@ -1,0 +1,1 @@
+export { default as TournamentM } from './tournaments-main';

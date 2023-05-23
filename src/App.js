@@ -13,7 +13,8 @@ import {
   TaskForm,
   SolveTask,
   TournamentList,
-  Tournament
+  Tournament,
+  TermsPage
 } from './pages';
 import { DataContext } from './utils';
 import styled from 'styled-components';
@@ -94,6 +95,10 @@ const App = () => {
                 <Route
                   path='profile'
                   element={<Profile />}
+                />
+                <Route
+                  path='terms_conditions'
+                  element={<TermsPage />}
                 />
                 <Route
                   path='contact_us'

@@ -13,7 +13,8 @@ import {
   TaskForm,
   SolveTask,
   TournamentList,
-  Tournament
+  Tournament,
+  TournamentForm
 } from './pages';
 import { DataContext } from './utils';
 import styled from 'styled-components';
@@ -98,6 +99,15 @@ const App = () => {
                 <Route
                   path='contact_us'
                   element={<Contact />}
+                />
+                <Route
+                  path='tournament-form/:id'
+                  element={
+                    <TournamentForm
+                      snackbarRef={snackbarRef}
+                      setSnackbar={setSnackbar}
+                    />
+                  }
                 />
                 <Route
                   path='profile/edit'

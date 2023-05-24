@@ -14,6 +14,7 @@ import {
   SolveTask,
   TournamentList,
   Tournament,
+  TermsPage
 } from './pages';
 import { Leaderboard } from './pages/leaderboard';
 import { DataContext } from './utils';
@@ -95,6 +96,10 @@ const App = () => {
                 <Route
                   path='profile'
                   element={<Profile />}
+                />
+                <Route
+                  path='terms_conditions'
+                  element={<TermsPage />}
                 />
                 <Route
                   path='contact_us'

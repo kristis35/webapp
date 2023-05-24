@@ -14,8 +14,10 @@ import {
   SolveTask,
   TournamentList,
   Tournament,
+  TermsPage,
   TournamentForm
 } from './pages';
+import { Leaderboard } from './pages/leaderboard';
 import { DataContext } from './utils';
 import styled from 'styled-components';
 
@@ -97,6 +99,10 @@ const App = () => {
                   element={<Profile />}
                 />
                 <Route
+                  path='terms_conditions'
+                  element={<TermsPage />}
+                />
+                <Route
                   path='contact_us'
                   element={<Contact />}
                 />
@@ -136,6 +142,10 @@ const App = () => {
                   }
                 />
               </Route>
+              <Route
+                  path='leaderboard'
+                  element={<Leaderboard />}
+                />
             </Routes>
             <Snackbar
               ref={snackbarRef}

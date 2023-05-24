@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
     Form,
@@ -84,7 +84,8 @@ const difficulty = [
     }
 ];
 
-const TournamentForm = () => {
+const TournamentForm = (props) => {
+    const theme = useTheme();
     const navigate = useNavigate();
     const { id } = useParams();
     const dataContext = useContext(DataContext);
@@ -100,9 +101,15 @@ const TournamentForm = () => {
 
     useEffect(() => {
         if (saveResponse?.status === 200) {
+            props.setSnackbar({
+                color: theme.colors.DarkGreen,
+                message: 'Tournament created successfully!'
+            });
+            props.snackbarRef.current.show();
             navigate('/tournaments');
         }
     }, [saveResponse]);
+
 
     useEffect(() => {
         find();
@@ -354,9 +361,28 @@ const TournamentForm = () => {
 
     useEffect(() => {
         if (response?.status === 200) {
+            props.setSnackbar({
+                color: theme.colors.DarkGreen,
+                message: 'Edit successful!'
+            });
+            props.snackbarRef.current.show();
+
             navigate(`/tournaments/${id}`);
         }
+
     }, [response]);
+
+    useEffect(() => {
+        if (error) {
+            if (error.response?.status === 403) {
+                props.setSnackbar({
+                    color: theme.colors.Red,
+                    message: 'Only the creator of the tournament or admin can edit it'
+                });
+                props.snackbarRef.current.show();
+            }
+        }
+    }, [error]);
 
     const removeTask = (index) => {
         const newTasks = [...tasks];
